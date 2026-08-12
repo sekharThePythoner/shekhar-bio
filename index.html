@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shekhar 🗿 | Developer & Builder</title>
+    <meta name="description" content="Portfolio of Shekhar, a 17-year-old developer, builder, and tech enthusiast from Assam.">
+    
+    <!-- Fonts: Inter (Body), Outfit (Modern Headings), Playfair Display (Elegant Quotes) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons (Lightweight, elegant variant) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        quote: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6', // Sophisticated Violet
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            900: '#4c1d95',
+                            950: '#2e1065',
+                        },
+                        accent: {
+                            500: '#f43f5e', // Rose
+                        },
+                        dark: {
+                            bg: '#0a0a0c', // Very dark purple-tinted gray
+                            card: '#131316',
+                            border: '#27272a'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'blob': 'blob 7s infinite',
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base styles & Scrollbar */
+        ::selection {
+            background-color: #8b5cf6;
+            color: white;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4d4d8;
+            border-radius: 10px;
+            border: 2px solid #f9fafb; /* Creates a padded effect */
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #3f3f46;
+            border-color: #0a0a0c;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a1a1aa;
+        }
+
+        /* Hide scrollbar for gallery containers but keep functionality */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Scroll Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 150ms; }
+        .reveal-delay-2 { transition-delay: 300ms; }
+        
+        /* Glassmorphism utilities - Softer and more elegant */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+        .dark .glass-nav {
+            background: rgba(19, 19, 22, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05);
+        }
+        .dark .glass-card {
+            background: rgba(30, 30, 35, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3);
+        }
+
+        /* Soft gradient text */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%);
+        }
+        
+        /* Elegant Blob positioning */
+        .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; animation-delay: 0s; }
+        .blob-2 { top: 20%; right: -20%; width: 400px; height: 400px; animation-delay: 2s; }
+        .blob-3 { bottom: -20%; left: 20%; width: 600px; height: 600px; animation-delay: 4s; }
+    </style>
+</head>
+<body class="bg-[#fafafa] text-gray-800 dark:bg-dark-bg dark:text-gray-100 font-sans antialiased transition-colors duration-500 overflow-x-hidden selection:bg-brand-500 selection:text-white">
+
+    <!-- Background Audio -->
+    <audio id="bg-music" loop>
+        <source src="bgmusics.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Initial Welcome Popup (Handles Autoplay) -->
+    <div id="welcome-popup" class="fixed inset-0 z-[100] flex items-center justify-center bg-white/80 dark:bg-[#0a0a0c]/90 backdrop-blur-xl transition-opacity duration-700">
+        <div class="glass-card p-10 rounded-[2.5rem] text-center max-w-md mx-4 transform transition-transform duration-700 scale-100 shadow-2xl shadow-brand-500/20">
+            <div class="w-20 h-20 mx-auto bg-gradient-to-tr from-brand-500 to-fuchsia-500 rounded-full flex items-center justify-center text-white mb-6 shadow-lg shadow-brand-500/30 animate-pulse">
+                <i class="ph-fill ph-headphones text-3xl"></i>
+            </div>
+            <h2 class="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-4">Ready to explore?</h2>
+            <p class="text-gray-500 dark:text-gray-400 mb-8 font-light">Turn on sound for the ultimate experience.</p>
+            <button id="start-btn" class="w-full px-8 py-4 rounded-2xl bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-semibold hover:scale-[1.02] transition-transform shadow-xl shadow-gray-900/20 dark:shadow-white/10 flex items-center justify-center gap-2 group">
+                Let's Go <i class="ph ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Navbar -->
+    <div class="fixed top-6 left-0 w-full z-50 px-4 sm:px-6 flex justify-center transition-transform duration-300" id="navbar-container">
+        <nav class="glass-nav w-full max-w-5xl rounded-full px-6 py-3 flex justify-between items-center shadow-lg shadow-gray-200/50 dark:shadow-black/50 transition-all duration-300">
+            <!-- Logo -->
+            <a href="#home" class="font-heading font-bold text-xl tracking-tight flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-500 to-fuchsia-500 flex items-center justify-center text-white text-sm shadow-md group-hover:shadow-brand-500/30 transition-shadow">S</div>
+                <span>Shekhar<span class="text-xs ml-1 opacity-80">🗿</span></span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-600 dark:text-gray-300">
+                <a href="#about" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors relative group">
+                    About
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-500 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#journey" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors relative group">
+                    Journey
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-500 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#projects" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors relative group">
+                    Projects
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-500 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#contact" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors relative group">
+                    Contact
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-500 transition-all group-hover:w-full"></span>
+                </a>
+                
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="ml-2 p-2 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 transition-colors focus:outline-none flex items-center justify-center shadow-inner" aria-label="Toggle Dark Mode">
+                    <i class="ph ph-sun text-lg hidden dark:block text-amber-200"></i>
+                    <i class="ph ph-moon text-lg block dark:hidden text-indigo-600"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center gap-3">
+                <button id="theme-toggle-mobile" class="p-2 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 transition-colors focus:outline-none flex items-center justify-center shadow-inner">
+                    <i class="ph ph-sun text-lg hidden dark:block text-amber-200"></i>
+                    <i class="ph ph-moon text-lg block dark:hidden text-indigo-600"></i>
+                </button>
+                <button id="mobile-menu-btn" class="text-gray-700 dark:text-gray-300 hover:text-brand-600 focus:outline-none p-2 bg-gray-100 dark:bg-white/10 rounded-full">
+                    <i class="ph ph-list text-xl"></i>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="md:hidden fixed inset-0 z-40 bg-white/90 dark:bg-dark-bg/95 backdrop-blur-lg transform translate-x-full transition-transform duration-300 flex flex-col justify-center items-center">
+        <div class="flex flex-col items-center space-y-8 text-2xl font-heading font-medium">
+            <a href="#about" class="mobile-link text-gray-800 dark:text-gray-100 hover:text-brand-500 transition-colors">About Me</a>
+            <a href="#journey" class="mobile-link text-gray-800 dark:text-gray-100 hover:text-brand-500 transition-colors">My Journey</a>
+            <a href="#projects" class="mobile-link text-gray-800 dark:text-gray-100 hover:text-brand-500 transition-colors">Projects</a>
+            <a href="#contact" class="mobile-link text-gray-800 dark:text-gray-100 hover:text-brand-500 transition-colors">Contact</a>
+        </div>
+    </div>
+
+    <main>
+        <section id="home" class="relative min-h-screen flex items-center justify-center pt-28 pb-20 overflow-hidden">
+            <!-- Elegant Background Blobs -->
+            <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+                <div class="absolute blob-1 bg-purple-300 dark:bg-brand-900/40 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-40 animate-blob"></div>
+                <div class="absolute blob-2 bg-pink-300 dark:bg-fuchsia-900/30 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-40 animate-blob"></div>
+                <div class="absolute blob-3 bg-indigo-300 dark:bg-indigo-900/30 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-40 animate-blob"></div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+                <div class="flex flex-col-reverse lg:flex-row items-center justify-between gap-16 lg:gap-12">
+                    
+                    <!-- Hero Text -->
+                    <div class="w-full lg:w-3/5 text-center lg:text-left animate-fade-in-up">
+                        <!-- Elegant Pill -->
+                        <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/60 dark:bg-white/5 border border-white/40 dark:border-white/10 shadow-sm backdrop-blur-md text-sm font-medium text-gray-600 dark:text-gray-300 mb-8">
+                            <span class="flex h-3 w-3 relative">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-brand-500"></span>
+                            </span>
+                            Developer • Builder • Tech Enthusiast
+                        </div>
+                        
+                        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-heading font-bold tracking-tight mb-6 leading-tight text-gray-900 dark:text-white">
+                            Hi, I'm <span class="text-gradient">Shekhar</span> 🗿
+                        </h1>
+                        
+                        <!-- Beautiful Typography for Tagline -->
+                        <p class="text-2xl sm:text-3xl font-heading font-medium text-gray-700 dark:text-gray-200 mb-6">
+                            "Jitna ragda, utna tagda. <span class="text-accent-500">💗</span><span class="opacity-80">💀</span>"
+                        </p>
+                        
+                        <p class="text-lg text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
+                            A 17-year-old Class 12 student from Assam building apps, websites, and games. Obsessed with software development and exploring the depths of backend engineering.
+                        </p>
+                        
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5">
+                            <a href="#projects" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-medium hover:scale-[1.02] transition-transform shadow-xl shadow-gray-900/20 dark:shadow-white/10 flex items-center justify-center gap-2 group">
+                                View My Work
+                                <i class="ph ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                            <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white/50 dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-white dark:hover:bg-white/10 text-gray-800 dark:text-white font-medium transition-all backdrop-blur-sm flex items-center justify-center gap-2">
+                                Contact Me
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Hero Image -->
+                    <div class="w-full sm:w-2/3 lg:w-2/5 flex justify-center lg:justify-end animate-fade-in-up" style="animation-delay: 150ms;">
+                        <div class="relative group w-72 h-72 sm:w-80 sm:h-80 lg:w-[400px] lg:h-[400px]">
+                            <!-- Soft Decorative Background Rings -->
+                            <div class="absolute inset-0 rounded-full border border-brand-200 dark:border-brand-500/20 scale-[1.15] -rotate-12 transition-transform duration-1000 group-hover:rotate-0 group-hover:scale-110"></div>
+                            <div class="absolute inset-0 rounded-full border border-accent-200 dark:border-fuchsia-500/20 scale-[1.08] rotate-12 transition-transform duration-1000 group-hover:rotate-45"></div>
+                            
+                            <!-- Image Container -->
+                            <div class="relative w-full h-full rounded-[2.5rem] overflow-hidden bg-white dark:bg-dark-card border-4 border-white dark:border-white/5 shadow-2xl shadow-brand-500/10 rotate-3 group-hover:rotate-0 transition-transform duration-700 ease-out z-10">
+                                <img src="photo.png" alt="Shekhar" 
+                                     class="w-full h-full object-cover object-center scale-105 group-hover:scale-100 transition-transform duration-700"
+                                     onerror="this.src='https://placehold.co/800x800/131316/ffffff?text=Shekhar+%F0%9F%97%BF'">
+                            </div>
+                            
+                            <!-- Floating Premium Badge -->
+                            <div class="absolute -bottom-4 -left-8 sm:-bottom-6 sm:-left-12 glass-card p-4 rounded-2xl animate-float z-20 flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
+                                    <i class="ph ph-rocket text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[11px] uppercase tracking-wider text-gray-500 dark:text-gray-400 font-semibold mb-0.5">Status</p>
+                                    <p class="text-sm font-bold text-gray-900 dark:text-white">Building 🚀</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Elegant Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-60 hover:opacity-100 transition-opacity z-10">
+                <div class="w-[1px] h-12 bg-gradient-to-b from-gray-400 dark:from-gray-500 to-transparent"></div>
+                <span class="text-[10px] tracking-[0.2em] uppercase font-medium">Discover</span>
+            </div>
+        </section>
+
+        <section id="philosophy" class="py-32 relative overflow-hidden flex items-center justify-center">
+            <!-- Subtle background pattern instead of harsh grids -->
+            <div class="absolute inset-0 opacity-[0.03] dark:opacity-[0.02]" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23000000\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+            
+            <div class="max-w-4xl mx-auto px-6 text-center relative z-10 reveal">
+                <i class="ph-fill ph-quotes text-5xl text-brand-500/40 mb-8 block"></i>
+                <h2 class="text-4xl md:text-5xl lg:text-7xl font-quote font-medium italic text-gray-900 dark:text-white leading-tight mb-10">
+                    "Dead son is better than failed son."
+                </h2>
+                <div class="w-12 h-1 bg-gradient-to-r from-brand-500 to-accent-500 mx-auto mb-8 rounded-full"></div>
+                <p class="text-xl md:text-2xl font-heading font-medium text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+                    Good man.
+                </p>
+            </div>
+        </section>
+
+        <section id="about" class="py-24 relative bg-white/50 dark:bg-[#0d0d10] border-y border-gray-100 dark:border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                    
+                    <!-- Bio Text -->
+                    <div class="lg:col-span-7 reveal">
+                        <h2 class="text-sm font-bold tracking-widest uppercase text-brand-600 dark:text-brand-400 mb-3">01. About Me</h2>
+                        <h3 class="text-3xl md:text-4xl font-heading font-bold mb-8 text-gray-900 dark:text-white">
+                            Builder by nature, <br/><span class="text-gray-500 font-light">developer by practice.</span>
+                        </h3>
+                        <div class="space-y-5 text-gray-600 dark:text-gray-400 text-lg leading-relaxed font-light">
+                            <p>
+                                I am Shekhar, a Class 12 student from Assam currently studying at Srikishan Sarda College. I completed my schooling from Nursery to Class 10 at Skylark English Medium School.
+                            </p>
+                            <p>
+                                I am deeply interested in technology and software development. I currently know Python, C, HTML, CSS, Java, JavaScript, C#, and Unity Engine.
+                            </p>
+                            <p>
+                                I enjoy <strong>building things</strong> rather than simply learning theory. I have explored web development, application development, game development, AI-assisted development, and I am now interested in going deeper into backend development.
+                            </p>
+                            <p>
+                                I am still learning, experimenting, breaking things, rebuilding them, and turning ideas into working projects.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Elegant Quick Facts Card -->
+                    <div class="lg:col-span-5 reveal reveal-delay-1">
+                        <div class="glass-card rounded-[2rem] p-8 relative overflow-hidden group">
+                            <!-- Subtle glow in card -->
+                            <div class="absolute -top-24 -right-24 w-48 h-48 bg-brand-500/20 rounded-full blur-3xl group-hover:bg-brand-500/30 transition-colors duration-500"></div>
+                            
+                            <h4 class="text-xl font-heading font-bold mb-8 flex items-center gap-3 relative z-10 text-gray-900 dark:text-white">
+                                <i class="ph-fill ph-identification-card text-brand-500 text-2xl"></i> Profile Summary
+                            </h4>
+                            
+                            <div class="space-y-4 relative z-10">
+                                <div class="flex justify-between items-center py-3 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-500 text-sm font-medium">Name</span>
+                                    <span class="font-semibold text-gray-900 dark:text-gray-100 text-right">Shekhar</span>
+                                </div>
+                                <div class="flex justify-between items-center py-3 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-500 text-sm font-medium">Location</span>
+                                    <span class="font-semibold text-gray-900 dark:text-gray-100 text-right">Assam, India</span>
+                                </div>
+                                <div class="flex justify-between items-center py-3 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-500 text-sm font-medium">Age</span>
+                                    <span class="font-semibold text-gray-900 dark:text-gray-100 text-right">17</span>
+                                </div>
+                                <div class="flex justify-between items-center py-3 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-500 text-sm font-medium">Education</span>
+                                    <span class="font-semibold text-gray-900 dark:text-gray-100 text-right">Class 12 (AHSEC)</span>
+                                </div>
+                                <div class="flex justify-between items-center py-3 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-500 text-sm font-medium">College</span>
+                                    <span class="font-semibold text-gray-900 dark:text-gray-100 text-right">Srikishan Sarda College</span>
+                                </div>
+                                <div class="flex justify-between items-center py-3 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-500 text-sm font-medium">Focus</span>
+                                    <span class="font-semibold text-gray-900 dark:text-gray-100 text-right">Software Dev & Backend</span>
+                                </div>
+                                <div class="flex justify-between items-center py-3">
+                                    <span class="text-gray-500 text-sm font-medium">Status</span>
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-500/10 text-brand-600 dark:text-brand-400 text-sm font-semibold">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span> Learning & Building
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <section id="education-skills" class="py-24 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                    <!-- Education -->
+                    <div class="reveal">
+                        <h2 class="text-sm font-bold tracking-widest uppercase text-brand-600 dark:text-brand-400 mb-3">02. Academic Background</h2>
+                        <h3 class="text-3xl font-heading font-bold mb-10 text-gray-900 dark:text-white">Education</h3>
+                        
+                        <div class="space-y-6">
+                            <!-- Current -->
+                            <div class="bg-white dark:bg-dark-card p-8 rounded-[1.5rem] border border-gray-100 dark:border-white/5 shadow-xl shadow-gray-200/20 dark:shadow-none relative group hover:-translate-y-1 transition-transform">
+                                <div class="absolute top-0 right-8 transform -translate-y-1/2 bg-gradient-to-r from-brand-500 to-brand-600 text-white text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full shadow-md">
+                                    Current
+                                </div>
+                                <h4 class="font-heading font-bold text-xl mb-1 text-gray-900 dark:text-white">Class 12 (AHSEC)</h4>
+                                <p class="text-gray-500 font-medium mb-4">Srikishan Sarda College (SS College)</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-sm px-3 py-1 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-lg text-gray-700 dark:text-gray-300">Physics</span>
+                                    <span class="text-sm px-3 py-1 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-lg text-gray-700 dark:text-gray-300">Chemistry</span>
+                                    <span class="text-sm px-3 py-1 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-lg text-gray-700 dark:text-gray-300">Mathematics</span>
+                                    <span class="text-sm px-3 py-1 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-lg text-gray-700 dark:text-gray-300">Statistics</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Previous -->
+                                <div class="bg-gray-50 dark:bg-white/[0.02] p-6 rounded-[1.5rem] border border-gray-100 dark:border-white/5">
+                                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-2">Previous</p>
+                                    <h4 class="font-heading font-bold text-lg mb-1 text-gray-900 dark:text-white">Nursery → Class 10</h4>
+                                    <p class="text-sm text-gray-500">Skylark English Medium School</p>
+                                </div>
+                                <!-- Future -->
+                                <div class="bg-brand-50/50 dark:bg-brand-900/10 p-6 rounded-[1.5rem] border border-brand-100 dark:border-brand-500/20">
+                                    <p class="text-xs text-brand-600 dark:text-brand-400 font-bold uppercase tracking-wider mb-2">Future Direction</p>
+                                    <h4 class="font-heading font-bold text-lg mb-1 text-brand-900 dark:text-brand-100">B.Tech</h4>
+                                    <p class="text-sm text-brand-700 dark:text-brand-300/70">Technology / Computer Science</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="reveal reveal-delay-1">
+                        <h2 class="text-sm font-bold tracking-widest uppercase text-brand-600 dark:text-brand-400 mb-3">03. Expertise</h2>
+                        <h3 class="text-3xl font-heading font-bold mb-10 text-gray-900 dark:text-white">Skills & Tools</h3>
+                        
+                        <div class="space-y-10">
+                            <!-- Programming -->
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-200 mb-4 flex items-center gap-2">
+                                    <i class="ph-fill ph-code-block text-brand-500"></i> Programming Languages
+                                </h4>
+                                <div class="flex flex-wrap gap-2.5">
+                                    <span class="px-4 py-2 bg-white dark:bg-dark-card border border-gray-200 dark:border-white/10 rounded-xl shadow-sm text-sm font-medium hover:shadow-md hover:border-brand-300 transition-all cursor-default">Python</span>
+                                    <span class="px-4 py-2 bg-white dark:bg-dark-card border border-gray-200 dark:border-white/10 rounded-xl shadow-sm text-sm font-medium hover:shadow-md hover:border-brand-300 transition-all cursor-default">C</span>
+                                    <span class="px-4 py-2 bg-white dark:bg-dark-card border border-gray-200 dark:border-white/10 rounded-xl shadow-sm text-sm font-medium hover:shadow-md hover:border-brand-300 transition-all cursor-default">Java</span>
+                                    <span class="px-4 py-2 bg-white dark:bg-dark-card border border-gray-200 dark:border-white/10 rounded-xl shadow-sm text-sm font-medium hover:shadow-md hover:border-brand-300 transition-all cursor-default">JavaScript</span>
+                                    <span class="px-4 py-2 bg-white dark:bg-dark-card border border-gray-200 dark:border-white/10 rounded-xl shadow-sm text-sm font-medium hover:shadow-md hover:border-brand-300 transition-all cursor-default">C#</span>
+                                    <span class="px-4 py-2 bg-white dark:bg-dark-card border border-gray-200 dark:border-white/10 rounded-xl shadow-sm text-sm font-medium hover:shadow-md hover:border-brand-300 transition-all cursor-default">HTML</span>
+                                    <span class="px-4 py-2 bg-white dark:bg-dark-card border border-gray-200 dark:border-white/10 rounded-xl shadow-sm text-sm font-medium hover:shadow-md hover:border-brand-300 transition-all cursor-default">CSS</span>
+                                </div>
+                            </div>
+
+                            <!-- Technologies -->
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-200 mb-4 flex items-center gap-2">
+                                    <i class="ph-fill ph-cpu text-brand-500"></i> Technologies & Areas
+                                </h4>
+                                <div class="flex flex-wrap gap-2.5">
+                                    <span class="px-4 py-2 bg-gray-50 dark:bg-white/5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 border border-transparent hover:border-gray-200 dark:hover:border-white/10 transition-colors">GitHub</span>
+                                    <span class="px-4 py-2 bg-gray-50 dark:bg-white/5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 border border-transparent hover:border-gray-200 dark:hover:border-white/10 transition-colors">Flask</span>
+                                    <span class="px-4 py-2 bg-gray-50 dark:bg-white/5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 border border-transparent hover:border-gray-200 dark:hover:border-white/10 transition-colors">AI</span>
+                                    <span class="px-4 py-2 bg-gray-50 dark:bg-white/5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 border border-transparent hover:border-gray-200 dark:hover:border-white/10 transition-colors">Unity</span>
+                                    <span class="px-4 py-2 bg-gray-50 dark:bg-white/5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 border border-transparent hover:border-gray-200 dark:hover:border-white/10 transition-colors">Web Development</span>
+                                    <span class="px-4 py-2 bg-gray-50 dark:bg-white/5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 border border-transparent hover:border-gray-200 dark:hover:border-white/10 transition-colors">App Development</span>
+                                    <span class="px-4 py-2 bg-gray-50 dark:bg-white/5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 border border-transparent hover:border-gray-200 dark:hover:border-white/10 transition-colors">Game Development</span>
+                                    <span class="px-4 py-2 bg-gray-50 dark:bg-white/5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 border border-transparent hover:border-gray-200 dark:hover:border-white/10 transition-colors">Backend Exploration</span>
+                                </div>
+                            </div>
+
+                            <!-- Tools (Now explicitly featuring Unity Engine) -->
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-200 mb-4 flex items-center gap-2">
+                                    <i class="ph-fill ph-wrench text-brand-500"></i> Software & Tools
+                                </h4>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                    <div class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-dark-card border border-gray-100 dark:border-white/5 rounded-xl shadow-sm">
+                                        <i class="ph-fill ph-code text-xl text-blue-500"></i>
+                                        <span class="text-sm font-medium">VS Code</span>
+                                    </div>
+                                    <div class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-dark-card border border-gray-100 dark:border-white/5 rounded-xl shadow-sm">
+                                        <i class="ph-fill ph-github-logo text-xl text-gray-900 dark:text-white"></i>
+                                        <span class="text-sm font-medium">GitHub</span>
+                                    </div>
+                                    <div class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-dark-card border border-gray-100 dark:border-white/5 rounded-xl shadow-sm">
+                                        <i class="ph-fill ph-triangle text-xl text-black dark:text-white"></i>
+                                        <span class="text-sm font-medium">Vercel</span>
+                                    </div>
+                                    <div class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-dark-card border border-gray-100 dark:border-white/5 rounded-xl shadow-sm">
+                                        <i class="ph-fill ph-android-logo text-xl text-green-500"></i>
+                                        <span class="text-sm font-medium">Android Studio</span>
+                                    </div>
+                                    <div class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-dark-card border border-gray-100 dark:border-white/5 rounded-xl shadow-sm">
+                                        <i class="ph-fill ph-cube text-xl text-gray-700 dark:text-gray-300"></i>
+                                        <span class="text-sm font-medium">Unity Engine</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="journey" class="py-24 bg-gray-50 dark:bg-[#0a0a0c]">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-20 reveal">
+                    <h2 class="text-sm font-bold tracking-widest uppercase text-brand-600 dark:text-brand-400 mb-3">04. Timeline</h2>
+                    <h3 class="text-3xl md:text-5xl font-heading font-bold mb-6 text-gray-900 dark:text-white">My Journey</h3>
+                    <p class="text-gray-500 font-light text-lg max-w-2xl mx-auto">
+                        The story begins after I bought my laptop last year. It's been a ride of breaking, fixing, and building.
+                    </p>
+                </div>
+
+                <!-- Elegant Vertical Timeline -->
+                <div class="relative pl-6 sm:pl-0">
+                    <!-- Central Line -->
+                    <div class="hidden sm:block absolute left-1/2 transform -translate-x-1/2 w-px h-full bg-gradient-to-b from-brand-200 via-brand-500 to-transparent dark:from-brand-900 dark:via-brand-500/50"></div>
+                    <div class="sm:hidden absolute left-0 w-px h-full bg-gradient-to-b from-brand-200 via-brand-500 to-transparent dark:from-brand-900 dark:via-brand-500/50"></div>
+
+                    <div class="space-y-16">
+                        
+                        <!-- Quarter 1 -->
+                        <div class="relative flex flex-col sm:flex-row items-center justify-between group reveal">
+                            <div class="hidden sm:block w-5/12 text-right pr-12">
+                                <h4 class="text-xl font-heading font-bold text-gray-900 dark:text-white">Focus: C</h4>
+                                <span class="text-sm text-brand-500 font-medium tracking-wide">QUARTER 1</span>
+                            </div>
+                            <div class="absolute left-[-29px] sm:left-1/2 transform sm:-translate-x-1/2 w-4 h-4 rounded-full bg-brand-500 shadow-[0_0_0_4px_rgba(255,255,255,1)] dark:shadow-[0_0_0_4px_#0a0a0c] z-10 transition-transform group-hover:scale-125 duration-300"></div>
+                            <div class="w-full sm:w-5/12 sm:pl-12">
+                                <div class="sm:hidden mb-2">
+                                    <span class="text-sm text-brand-500 font-medium tracking-wide">QUARTER 1</span>
+                                    <h4 class="text-xl font-heading font-bold text-gray-900 dark:text-white">Focus: C</h4>
+                                </div>
+                                <div class="bg-white dark:bg-dark-card p-6 rounded-2xl border border-gray-100 dark:border-white/5 shadow-sm">
+                                    <p class="text-gray-600 dark:text-gray-400 font-light leading-relaxed">
+                                        Learnt C and explored its uses. Started understanding programming fundamentals and explored backend concepts.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quarter 2 -->
+                        <div class="relative flex flex-col sm:flex-row-reverse items-center justify-between group reveal">
+                            <div class="hidden sm:block w-5/12 text-left pl-12">
+                                <h4 class="text-xl font-heading font-bold text-gray-900 dark:text-white">Focus: Python</h4>
+                                <span class="text-sm text-brand-500 font-medium tracking-wide">QUARTER 2</span>
+                            </div>
+                            <div class="absolute left-[-29px] sm:left-1/2 transform sm:-translate-x-1/2 w-4 h-4 rounded-full bg-brand-500 shadow-[0_0_0_4px_rgba(255,255,255,1)] dark:shadow-[0_0_0_4px_#0a0a0c] z-10 transition-transform group-hover:scale-125 duration-300"></div>
+                            <div class="w-full sm:w-5/12 sm:pr-12">
+                                <div class="sm:hidden mb-2">
+                                    <span class="text-sm text-brand-500 font-medium tracking-wide">QUARTER 2</span>
+                                    <h4 class="text-xl font-heading font-bold text-gray-900 dark:text-white">Focus: Python</h4>
+                                </div>
+                                <div class="bg-white dark:bg-dark-card p-6 rounded-2xl border border-gray-100 dark:border-white/5 shadow-sm text-left sm:text-right">
+                                    <p class="text-gray-600 dark:text-gray-400 font-light leading-relaxed">
+                                        Learnt Python and explored what could be built with it. Started exploring PC games and programming possibilities.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quarter 3 -->
+                        <div class="relative flex flex-col sm:flex-row items-center justify-between group reveal">
+                            <div class="hidden sm:block w-5/12 text-right pr-12">
+                                <h4 class="text-xl font-heading font-bold text-gray-900 dark:text-white">Focus: C# + Unity</h4>
+                                <span class="text-sm text-brand-500 font-medium tracking-wide">QUARTER 3</span>
+                            </div>
+                            <div class="absolute left-[-29px] sm:left-1/2 transform sm:-translate-x-1/2 w-4 h-4 rounded-full bg-brand-500 shadow-[0_0_0_4px_rgba(255,255,255,1)] dark:shadow-[0_0_0_4px_#0a0a0c] z-10 transition-transform group-hover:scale-125 duration-300"></div>
+                            <div class="w-full sm:w-5/12 sm:pl-12">
+                                <div class="sm:hidden mb-2">
+                                    <span class="text-sm text-brand-500 font-medium tracking-wide">QUARTER 3</span>
+                                    <h4 class="text-xl font-heading font-bold text-gray-900 dark:text-white">Focus: C# + Unity</h4>
+                                </div>
+                                <div class="bg-white dark:bg-dark-card p-6 rounded-2xl border border-gray-100 dark:border-white/5 shadow-sm">
+                                    <p class="text-gray-600 dark:text-gray-400 font-light leading-relaxed">
+                                        Learnt the basics of C# and Unity Engine. Built a game and explored useful software and websites.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quarter 4 -->
+                        <div class="relative flex flex-col sm:flex-row-reverse items-center justify-between group reveal">
+                            <div class="hidden sm:block w-5/12 text-left pl-12">
+                                <h4 class="text-xl font-heading font-bold text-gray-900 dark:text-white">Focus: Web + AI</h4>
+                                <span class="text-sm text-brand-500 font-medium tracking-wide">QUARTER 4</span>
+                            </div>
+                            <div class="absolute left-[-29px] sm:left-1/2 transform sm:-translate-x-1/2 w-4 h-4 rounded-full bg-brand-500 shadow-[0_0_0_4px_rgba(255,255,255,1)] dark:shadow-[0_0_0_4px_#0a0a0c] z-10 transition-transform group-hover:scale-125 duration-300"></div>
+                            <div class="w-full sm:w-5/12 sm:pr-12">
+                                <div class="sm:hidden mb-2">
+                                    <span class="text-sm text-brand-500 font-medium tracking-wide">QUARTER 4</span>
+                                    <h4 class="text-xl font-heading font-bold text-gray-900 dark:text-white">Focus: Web + AI</h4>
+                                </div>
+                                <div class="bg-white dark:bg-dark-card p-6 rounded-2xl border border-gray-100 dark:border-white/5 shadow-sm text-left sm:text-right">
+                                    <p class="text-gray-600 dark:text-gray-400 font-light leading-relaxed">
+                                        Learnt HTML, CSS and JavaScript with the help of AI-assisted development. Started building websites and experimenting with modern web development.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Current -->
+                        <div class="relative flex flex-col sm:flex-row items-center justify-between group reveal">
+                            <div class="hidden sm:block w-5/12 text-right pr-12">
+                                <h4 class="text-2xl font-heading font-bold text-gradient">Focus: Building</h4>
+                                <span class="text-sm text-brand-600 dark:text-brand-400 font-bold tracking-wide">2026 — CURRENT</span>
+                            </div>
+                            <div class="absolute left-[-35px] sm:left-1/2 transform sm:-translate-x-1/2 w-8 h-8 rounded-full bg-gradient-to-tr from-brand-500 to-fuchsia-500 shadow-[0_0_0_4px_rgba(255,255,255,1)] dark:shadow-[0_0_0_4px_#0a0a0c] z-10 flex items-center justify-center animate-pulse">
+                                <i class="ph-fill ph-rocket text-white text-xs"></i>
+                            </div>
+                            <div class="w-full sm:w-5/12 sm:pl-12">
+                                <div class="sm:hidden mb-2">
+                                    <span class="text-sm text-brand-600 dark:text-brand-400 font-bold tracking-wide">2026 — CURRENT</span>
+                                    <h4 class="text-2xl font-heading font-bold text-gradient">Focus: Building</h4>
+                                </div>
+                                <div class="bg-gradient-to-br from-brand-50 to-white dark:from-brand-900/10 dark:to-dark-card p-6 rounded-2xl border border-brand-100 dark:border-brand-500/20 shadow-lg shadow-brand-500/5">
+                                    <p class="text-gray-700 dark:text-gray-300 font-medium leading-relaxed">
+                                        Currently building applications, websites and tools while continuing to explore software development and backend technologies.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="py-32 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-20 reveal">
+                    <h2 class="text-sm font-bold tracking-widest uppercase text-brand-600 dark:text-brand-400 mb-3">05. Portfolio</h2>
+                    <h3 class="text-4xl md:text-5xl font-heading font-bold mb-6 text-gray-900 dark:text-white">Featured Projects</h3>
+                    <p class="text-gray-500 font-light text-lg max-w-2xl mx-auto">
+                        I build things rather than simply learning theory. Here are some of the tools, apps, and games I've developed.
+                    </p>
+                </div>
+
+                <div class="space-y-24">
+                    
+                    <!-- Project 1: Parishrami 2027 -->
+                    <article class="reveal group">
+                        <div class="bg-white dark:bg-dark-card rounded-[2.5rem] overflow-hidden border border-gray-100 dark:border-white/5 shadow-2xl shadow-gray-200/40 dark:shadow-black/40 flex flex-col lg:flex-row transition-transform duration-500 hover:-translate-y-2">
+                            <div class="w-full lg:w-5/12 p-8 md:p-12 flex flex-col justify-between z-10 bg-white dark:bg-dark-card relative">
+                                <div>
+                                    <div class="w-14 h-14 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 flex items-center justify-center mb-6 overflow-hidden shadow-sm">
+                                        <img src="logo-a.png" alt="Parishrami Logo" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100/f8fafc/0f172a?text=P&font=Outfit'">
+                                    </div>
+                                    <h3 class="text-3xl font-heading font-bold mb-4 text-gray-900 dark:text-white">Parishrami 2027</h3>
+                                    <p class="text-gray-500 font-light mb-6 leading-relaxed">
+                                        A 100% free learning platform for Class 12 Science & AHSEC students. Access chapter-wise PYQs, notes, question banks, one-shots, and an in-app AI Tutor for instant doubt clearing.
+                                    </p>
+                                    
+                                    <div class="mb-8 p-4 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5">
+                                        <h4 class="text-xs font-bold uppercase text-gray-400 mb-2">Problem Solved</h4>
+                                        <p class="text-sm text-gray-700 dark:text-gray-300">Students struggle to find all their study modules, notes, PYQs, and educational materials organized in one place.</p>
+                                    </div>
+                                    
+                                    <div class="flex flex-wrap gap-2 mb-8">
+                                        <span class="text-xs font-medium px-3 py-1 rounded-full bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300">VS Code</span>
+                                        <span class="text-xs font-medium px-3 py-1 rounded-full bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300">Android Studio</span>
+                                        <span class="text-xs font-medium px-3 py-1 rounded-full bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300">Vercel</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap gap-4 mt-auto">
+                                    <a href="https://parishram2027.site" target="_blank" class="px-6 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold rounded-xl hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors flex items-center gap-2">
+                                        <i class="ph ph-globe text-lg"></i> Visit Website
+                                    </a>
+                                    <a href="your app link here" class="px-6 py-3 bg-gray-100 dark:bg-white/5 hover:bg-brand-50 dark:hover:bg-brand-500/10 text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 text-sm font-semibold rounded-xl transition-colors flex items-center gap-2">
+                                        <i class="ph ph-android-logo text-lg"></i> Get App
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="w-full lg:w-7/12 bg-gray-50 dark:bg-[#18181b] p-8 md:p-12 flex items-center">
+                                <div class="flex overflow-x-auto gap-6 pb-6 hide-scrollbar snap-x snap-mandatory w-full items-center">
+                                    <img src="b1.png" alt="Preview 1" class="w-[500px] h-auto object-cover rounded-xl snap-center shrink-0 shadow-xl border border-gray-200/50 dark:border-white/10" onerror="this.src='https://placehold.co/600x400/ffffff/0a0a0c?text=Dashboard&font=Outfit'">
+                                    <img src="b2.png" alt="Preview 2" class="w-[500px] h-auto object-cover rounded-xl snap-center shrink-0 shadow-xl border border-gray-200/50 dark:border-white/10" onerror="this.src='https://placehold.co/600x400/ffffff/0a0a0c?text=Study+Rooms&font=Outfit'">
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Project 3: Lead Tracker -->
+                    <article class="reveal group">
+                        <div class="bg-white dark:bg-dark-card rounded-[2.5rem] overflow-hidden border border-gray-100 dark:border-white/5 shadow-2xl shadow-gray-200/40 dark:shadow-black/40 flex flex-col lg:flex-row transition-transform duration-500 hover:-translate-y-2">
+                            <div class="w-full lg:w-5/12 p-8 md:p-12 flex flex-col justify-between z-10 bg-white dark:bg-dark-card">
+                                <div>
+                                    <div class="w-14 h-14 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 flex items-center justify-center mb-6 overflow-hidden shadow-sm">
+                                        <img src="logo-c.png" alt="Lead Tracker Logo" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100/f8fafc/0f172a?text=LT&font=Outfit'">
+                                    </div>
+                                    <h3 class="text-3xl font-heading font-bold mb-4 text-gray-900 dark:text-white">Lead Tracker</h3>
+                                    <p class="text-gray-500 font-light mb-6 leading-relaxed">
+                                        A smart, serverless CRM built for freelancers and small businesses. Features an AI Sales Assistant, 1-Click WhatsApp Outreach, and Dynamic Kanban Pipelines that auto-update real-time analytics.
+                                    </p>
+                                    
+                                    <div class="mb-8 p-4 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5">
+                                        <h4 class="text-xs font-bold uppercase text-gray-400 mb-2">Problem Solved</h4>
+                                        <p class="text-sm text-gray-700 dark:text-gray-300">Businesses and freelancers often struggle to organize, manage, and efficiently track their customer and lead data.</p>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap gap-4 mt-auto">
+                                    <a href="https://parishramtracker.vercel.app" target="_blank" class="px-6 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold rounded-xl hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors flex items-center gap-2">
+                                        <i class="ph ph-globe text-lg"></i> Visit Website
+                                    </a>
+                                    <a href="your app link here" class="px-6 py-3 bg-gray-100 dark:bg-white/5 hover:bg-brand-50 dark:hover:bg-brand-500/10 text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 text-sm font-semibold rounded-xl transition-colors flex items-center gap-2">
+                                        <i class="ph ph-android-logo text-lg"></i> Get App
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="w-full lg:w-7/12 bg-gray-50 dark:bg-[#18181b] p-8 md:p-12 flex items-center">
+                                <div class="flex overflow-x-auto gap-6 pb-6 hide-scrollbar snap-x snap-mandatory w-full items-center">
+                                    <img src="c1.png" alt="Kanban" class="w-[500px] h-auto object-cover rounded-xl snap-center shrink-0 shadow-xl border border-gray-200/50 dark:border-white/10" onerror="this.src='https://placehold.co/600x400/ffffff/0a0a0c?text=Kanban+Board&font=Outfit'">
+                                    <img src="c2.png" alt="Analytics" class="w-[500px] h-auto object-cover rounded-xl snap-center shrink-0 shadow-xl border border-gray-200/50 dark:border-white/10" onerror="this.src='https://placehold.co/600x400/ffffff/0a0a0c?text=Analytics&font=Outfit'">
+                                </div>
+                                <div class="flex flex-wrap gap-4 mt-auto">
+                                    <a href="https://leadtrackerz.vercel.app" target="_blank" class="px-6 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold rounded-xl hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors flex items-center gap-2">
+                                        <i class="ph ph-globe text-lg"></i> Visit Website
+                                    </a>
+                                    <a href="your app link here" class="px-6 py-3 bg-gray-100 dark:bg-white/5 hover:bg-brand-50 dark:hover:bg-brand-500/10 text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 text-sm font-semibold rounded-xl transition-colors flex items-center gap-2">
+                                        <i class="ph ph-android-logo text-lg"></i> Get App
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="w-full lg:w-7/12 bg-gray-50 dark:bg-[#18181b] p-8 md:p-12 flex items-center">
+                            <div class="w-full lg:w-5/12 p-8 md:p-12 flex flex-col justify-between z-10 relative">
+                                <div>
+                                    <div class="w-14 h-14 rounded-2xl bg-[#1c1c24] border border-[#2a2a35] flex items-center justify-center mb-6 overflow-hidden shadow-sm">
+                                        <img src="logo-d.png" alt="Game Logo" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100/1c1c24/ffffff?text=CoS&font=Outfit'">
+                                    </div>
+                                    <span class="inline-block px-3 py-1 bg-indigo-500/20 text-indigo-300 text-xs font-semibold tracking-wider rounded-full mb-3">UNITY GAME</span>
+                                    <h3 class="text-3xl font-heading font-bold mb-4">Call of Sekhar: <br/><span class="text-gray-400 font-normal">Abandoned Island</span></h3>
+                                    
+                                    <div class="space-y-4 text-gray-400 font-light mb-8 leading-relaxed">
+                                        <p>You wake up on a quiet island where nothing works like it should. No map. No signal. Just abandoned structures and strange sounds in the distance.</p>
+                                        <p>Explore the island, discover hidden locations, and piece together what really happened. A game focused on atmosphere, exploration, and mystery.</p>
+                                    </div>
+                                </div>
+                                <div class="mt-auto">
+                                    <a href="https://sekharwaa.itch.io/call-of-sekhar-abandoned-island" target="_blank" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl transition-colors flex items-center justify-center sm:justify-start w-max gap-2 shadow-lg shadow-indigo-500/30">
+                                        <i class="ph-fill ph-play-circle text-lg"></i> Play Game
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="w-full lg:w-7/12 p-8 md:p-12 flex items-center relative">
+                                <div class="flex overflow-x-auto gap-6 pb-6 hide-scrollbar snap-x snap-mandatory w-full items-center">
+                                    <img src="d1.png" alt="Gameplay 1" class="w-[500px] h-auto object-cover rounded-xl snap-center shrink-0 border border-[#2a2a35]" onerror="this.src='https://placehold.co/600x350/1c1c24/ffffff?text=Atmosphere&font=Outfit'">
+                                    <img src="d2.png" alt="Gameplay 2" class="w-[500px] h-auto object-cover rounded-xl snap-center shrink-0 border border-[#2a2a35]" onerror="this.src='https://placehold.co/600x350/1c1c24/ffffff?text=Exploration&font=Outfit'">
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Grid for remaining tools -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        
+                        <!-- Project 5: DocSHIFT -->
+                        <article class="reveal bg-white dark:bg-dark-card p-8 md:p-10 rounded-[2rem] border border-gray-100 dark:border-white/5 shadow-xl shadow-gray-200/40 dark:shadow-black/40 hover:-translate-y-1 transition-transform">
+                            <div class="flex items-start justify-between mb-6">
+                                <div class="w-12 h-12 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 flex items-center justify-center overflow-hidden">
+                                    <img src="logo-e.png" alt="DocSHIFT" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100/f8fafc/0f172a?text=DS&font=Outfit'">
+                                </div>
+                            </div>
+                            <h3 class="text-2xl font-heading font-bold mb-3 text-gray-900 dark:text-white">DocSHIFT</h3>
+                            <p class="text-gray-500 font-light mb-8 text-sm leading-relaxed">
+                                The ultimate Swiss Army knife for document and image management. Empowering users to seamlessly convert between formats, compress heavy documents, and manipulate images in a single unified interface.
+                            </p>
+                            
+                            <div class="space-y-2 mb-8">
+                                <p class="text-xs font-semibold text-gray-900 dark:text-gray-300 flex items-center gap-2"><i class="ph-fill ph-check-circle text-brand-500"></i> PDF Creation & Conversion</p>
+                                <p class="text-xs font-semibold text-gray-900 dark:text-gray-300 flex items-center gap-2"><i class="ph-fill ph-check-circle text-brand-500"></i> PDF Merge & Compress</p>
+                                <p class="text-xs font-semibold text-gray-900 dark:text-gray-300 flex items-center gap-2"><i class="ph-fill ph-check-circle text-brand-500"></i> Image Format & Size Utils</p>
+                            </div>
+
+                            <a href="your app link here" class="inline-flex px-4 py-2 bg-gray-50 dark:bg-white/5 hover:bg-brand-50 dark:hover:bg-brand-500/10 text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 text-xs font-semibold rounded-lg items-center gap-2 border border-gray-100 dark:border-white/5 transition-colors w-max">
+                                <i class="ph ph-android-logo"></i> Get App
+                            </a>
+                        </article>
+
+                        <div class="flex flex-col gap-8">
+                            <!-- Project 6: Subtitle Summarizer -->
+                            <article class="reveal reveal-delay-1 flex-1 bg-white dark:bg-dark-card p-8 rounded-[2rem] border border-gray-100 dark:border-white/5 shadow-xl shadow-gray-200/40 dark:shadow-black/40 hover:-translate-y-1 transition-transform">
+                                <div class="flex items-center gap-4 mb-4">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-500 flex items-center justify-center">
+                                        <i class="ph-fill ph-subtitles text-xl"></i>
+                                    </div>
+                                    <h3 class="text-xl font-heading font-bold text-gray-900 dark:text-white">Subtitle Summarizer</h3>
+                                </div>
+                                <p class="text-gray-500 font-light text-sm mb-6 leading-relaxed">
+                                    Web-based tool to automatically extract and condense key info from .srt or .vtt subtitle files. Powered by a serverless Python backend using NLP to return concise summaries.
+                                </p>
+                                <div class="flex gap-2">
+                                    <span class="text-xs font-medium px-3 py-1 rounded-md bg-gray-50 dark:bg-white/5 text-gray-600 dark:text-gray-300">Vanilla JS</span>
+                                    <span class="text-xs font-medium px-3 py-1 rounded-md bg-gray-50 dark:bg-white/5 text-gray-600 dark:text-gray-300">Python NLP</span>
+                                </div>
+                            </article>
+
+                            <!-- Project 7: Calculator -->
+                            <article class="reveal reveal-delay-2 bg-white dark:bg-dark-card p-8 rounded-[2rem] border border-gray-100 dark:border-white/5 shadow-xl shadow-gray-200/40 dark:shadow-black/40 hover:-translate-y-1 transition-transform">
+                                <div class="flex items-center gap-4 mb-4">
+                                    <div class="w-10 h-10 rounded-xl bg-gray-50 dark:bg-white/5 text-gray-600 dark:text-gray-300 flex items-center justify-center">
+                                        <i class="ph-fill ph-calculator text-xl"></i>
+                                    </div>
+                                    <h3 class="text-xl font-heading font-bold text-gray-900 dark:text-white">Calculator</h3>
+                                </div>
+                                <p class="text-gray-500 font-light text-sm leading-relaxed">
+                                    A simple foundational calculator project built during the early stages of my development journey to understand logic and UI interactions.
+                                </p>
+                            </article>
+                        </div>
+                        
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="learning-milestones" class="py-24 bg-white/50 dark:bg-[#0d0d10] border-y border-gray-100 dark:border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+                    
+                    <!-- What I'm Exploring -->
+                    <div class="reveal">
+                        <h2 class="text-sm font-bold tracking-widest uppercase text-brand-600 dark:text-brand-400 mb-3">06. Current Focus</h2>
+                        <h3 class="text-3xl font-heading font-bold mb-8 text-gray-900 dark:text-white">What I'm Exploring</h3>
+                        
+                        <p class="text-gray-500 font-light mb-8 leading-relaxed">These are the areas I am actively learning, researching, and trying to improve my skills in right now.</p>
+                        
+                        <div class="space-y-5">
+                            <div class="glass-card p-4 rounded-xl flex items-start gap-4 hover:border-brand-300 transition-colors">
+                                <div class="p-2 bg-brand-50 dark:bg-brand-500/10 rounded-lg text-brand-600 dark:text-brand-400 shrink-0"><i class="ph-fill ph-database text-lg"></i></div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 dark:text-white text-sm">Backend Development</h4>
+                                    <p class="text-sm text-gray-500 font-light mt-1">Digging deeper into server logic and databases.</p>
+                                </div>
+                            </div>
+                            <div class="glass-card p-4 rounded-xl flex items-start gap-4 hover:border-brand-300 transition-colors">
+                                <div class="p-2 bg-brand-50 dark:bg-brand-500/10 rounded-lg text-brand-600 dark:text-brand-400 shrink-0"><i class="ph-fill ph-robot text-lg"></i></div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 dark:text-white text-sm">Python & AI</h4>
+                                    <p class="text-sm text-gray-500 font-light mt-1">Leveraging AI tools and Python scripts to automate tasks.</p>
+                                </div>
+                            </div>
+                            <div class="glass-card p-4 rounded-xl flex items-start gap-4 hover:border-brand-300 transition-colors">
+                                <div class="p-2 bg-brand-50 dark:bg-brand-500/10 rounded-lg text-brand-600 dark:text-brand-400 shrink-0"><i class="ph-fill ph-intersect text-lg"></i></div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 dark:text-white text-sm">Software Architecture</h4>
+                                    <p class="text-sm text-gray-500 font-light mt-1">Understanding how to structure large-scale applications.</p>
+                                </div>
+                            </div>
+                            <div class="glass-card p-4 rounded-xl flex items-start gap-4 hover:border-brand-300 transition-colors">
+                                <div class="p-2 bg-brand-50 dark:bg-brand-500/10 rounded-lg text-brand-600 dark:text-brand-400 shrink-0"><i class="ph-fill ph-hammer text-lg"></i></div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 dark:text-white text-sm">Building Products</h4>
+                                    <p class="text-sm text-gray-500 font-light mt-1">Focusing on useful tools over theoretical tutorials.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Milestones -->
+                    <div class="reveal reveal-delay-1">
+                        <h2 class="text-sm font-bold tracking-widest uppercase text-brand-600 dark:text-brand-400 mb-3">07. Progress</h2>
+                        <h3 class="text-3xl font-heading font-bold mb-8 text-gray-900 dark:text-white">Real Milestones</h3>
+                        
+                        <div class="relative pl-6 border-l border-gray-200 dark:border-white/10 space-y-8 mt-10">
+                            <div class="relative">
+                                <span class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-brand-500 ring-4 ring-gray-50 dark:ring-[#0d0d10]"></span>
+                                <h4 class="font-bold text-gray-900 dark:text-white text-lg">Built Multiple Projects (2026)</h4>
+                                <p class="text-gray-500 font-light mt-1">Successfully developed and deployed full web tools and trackers.</p>
+                            </div>
+                            <div class="relative">
+                                <span class="absolute -left-[29px] top-1.5 w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 ring-4 ring-gray-50 dark:ring-[#0d0d10]"></span>
+                                <h4 class="font-medium text-gray-800 dark:text-gray-200">Built a Unity Game</h4>
+                                <p class="text-sm text-gray-500 font-light mt-1">Created atmosphere-focused game "Call of Sekhar".</p>
+                            </div>
+                            <div class="relative">
+                                <span class="absolute -left-[29px] top-1.5 w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 ring-4 ring-gray-50 dark:ring-[#0d0d10]"></span>
+                                <h4 class="font-medium text-gray-800 dark:text-gray-200">Learned Multiple Languages</h4>
+                                <p class="text-sm text-gray-500 font-light mt-1">Grasped C, Python, C#, JS, Java concepts practically.</p>
+                            </div>
+                            <div class="relative">
+                                <span class="absolute -left-[29px] top-1.5 w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 ring-4 ring-gray-50 dark:ring-[#0d0d10]"></span>
+                                <h4 class="font-medium text-gray-800 dark:text-gray-200">Started Programming</h4>
+                                <p class="text-sm text-gray-500 font-light mt-1">Got my laptop and immediately began exploring code.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-gray-50 dark:bg-dark-bg text-center reveal">
+            <h2 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-8">Beyond Code</h2>
+            <div class="flex flex-wrap justify-center gap-6 px-4">
+                <div class="px-6 py-3 rounded-full bg-white dark:bg-dark-card border border-gray-100 dark:border-white/5 shadow-sm flex items-center gap-3 text-gray-700 dark:text-gray-300">
+                    <i class="ph ph-bicycle text-xl text-brand-500"></i> <span class="font-medium text-sm">Cycling</span>
+                </div>
+                <div class="px-6 py-3 rounded-full bg-white dark:bg-dark-card border border-gray-100 dark:border-white/5 shadow-sm flex items-center gap-3 text-gray-700 dark:text-gray-300">
+                    <i class="ph ph-game-controller text-xl text-brand-500"></i> <span class="font-medium text-sm">Gaming</span>
+                </div>
+                <div class="px-6 py-3 rounded-full bg-white dark:bg-dark-card border border-gray-100 dark:border-white/5 shadow-sm flex items-center gap-3 text-gray-700 dark:text-gray-300">
+                    <i class="ph ph-boxing-glove text-xl text-brand-500"></i> 
+                    <span class="font-medium text-sm">Watching MMA</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-32 relative overflow-hidden bg-brand-50/30 dark:bg-brand-900/5">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 reveal">
+                <h2 class="text-5xl md:text-6xl font-heading font-bold tracking-tight mb-6 text-gray-900 dark:text-white">Let's Build Something.</h2>
+                <p class="text-lg text-gray-500 font-light mb-12">
+                    Have an idea, project, or simply want to connect? Reach out.
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-4">
+                    <!-- Email -->
+                    <a href="mailto:shmlgowala@gmail.com" class="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white dark:bg-dark-card border border-gray-200 dark:border-white/10 shadow-sm hover:shadow-md hover:border-brand-500 transition-all group w-full sm:w-auto">
+                        <i class="ph-fill ph-envelope-simple text-xl text-gray-600 dark:text-gray-400 group-hover:text-brand-500 transition-colors"></i>
+                        <span class="font-medium text-gray-900 dark:text-gray-100">Email Me</span>
+                    </a>
+                    
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/918453574472" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white dark:bg-dark-card border border-gray-200 dark:border-white/10 shadow-sm hover:shadow-md hover:border-green-500 transition-all group w-full sm:w-auto">
+                        <i class="ph-fill ph-whatsapp-logo text-xl text-gray-600 dark:text-gray-400 group-hover:text-green-500 transition-colors"></i>
+                        <span class="font-medium text-gray-900 dark:text-gray-100">WhatsApp</span>
+                    </a>
+
+                    <!-- Telegram -->
+                    <a href="https://t.me/the_phantom_x" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white dark:bg-dark-card border border-gray-200 dark:border-white/10 shadow-sm hover:shadow-md hover:border-blue-500 transition-all group w-full sm:w-auto">
+                        <i class="ph-fill ph-telegram-logo text-xl text-gray-600 dark:text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                        <span class="font-medium text-gray-900 dark:text-gray-100">Telegram</span>
+                    </a>
+
+                    <!-- GitHub -->
+                    <a href="https://github.com/sekharThePythoner" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white dark:bg-dark-card border border-gray-200 dark:border-white/10 shadow-sm hover:shadow-md hover:border-gray-900 dark:hover:border-gray-500 transition-all group w-full sm:w-auto">
+                        <i class="ph-fill ph-github-logo text-xl text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors"></i>
+                        <span class="font-medium text-gray-900 dark:text-gray-100">GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white dark:bg-dark-bg py-8 border-t border-gray-100 dark:border-white/5">
+        <div class="max-w-7xl mx-auto px-4 text-center flex flex-col md:flex-row items-center justify-between gap-4">
+            <p class="text-sm text-gray-400 font-light">
+                &copy; 2026 Shekhar 🗿. All rights reserved.
+            </p>
+            <p class="text-xs text-gray-400 flex items-center gap-1 font-medium tracking-wide">
+                Jitna ragda, utna tagda <i class="ph-fill ph-heart text-accent-500"></i> <i class="ph-fill ph-skull"></i>
+            </p>
+            <a href="#home" class="p-2.5 rounded-xl bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors text-gray-500" aria-label="Back to top">
+                <i class="ph ph-arrow-up"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Audio Popup Logic ---
+            const welcomePopup = document.getElementById('welcome-popup');
+            const startBtn = document.getElementById('start-btn');
+            const bgMusic = document.getElementById('bg-music');
+            
+            // Disable scrolling when popup is active
+            document.body.style.overflow = 'hidden';
+
+            startBtn.addEventListener('click', () => {
+                // Start playing the music
+                if (bgMusic) {
+                    bgMusic.play().catch(err => console.log("Audio playback failed:", err));
+                }
+                
+                // Fade out popup
+                welcomePopup.style.opacity = '0';
+                setTimeout(() => {
+                    welcomePopup.style.display = 'none';
+                    // Re-enable scrolling
+                    document.body.style.overflow = '';
+                    
+                    // Manually trigger reveal for items already in view
+                    document.querySelectorAll('.reveal').forEach(el => {
+                        if (el.getBoundingClientRect().top < window.innerHeight) {
+                            el.classList.add('active');
+                        }
+                    });
+                }, 700);
+            });
+
+            // --- Theme Toggle Logic ---
+            const htmlClasses = document.documentElement.classList;
+            const themeToggleBtns = [document.getElementById('theme-toggle'), document.getElementById('theme-toggle-mobile')];
+            
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                htmlClasses.add('dark');
+            } else {
+                htmlClasses.remove('dark');
+            }
+
+            themeToggleBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    htmlClasses.toggle('dark');
+                    if (htmlClasses.contains('dark')) {
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        localStorage.setItem('theme', 'light');
+                    }
+                });
+            });
+
+            // --- Mobile Menu Logic ---
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+            const menuIcon = mobileBtn.querySelector('i');
+
+            mobileBtn.addEventListener('click', () => {
+                const isHidden = mobileMenu.classList.contains('translate-x-full');
+                if(isHidden) {
+                    mobileMenu.classList.remove('translate-x-full');
+                    menuIcon.classList.remove('ph-list');
+                    menuIcon.classList.add('ph-x');
+                } else {
+                    mobileMenu.classList.add('translate-x-full');
+                    menuIcon.classList.remove('ph-x');
+                    menuIcon.classList.add('ph-list');
+                }
+            });
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('translate-x-full');
+                    menuIcon.classList.remove('ph-x');
+                    menuIcon.classList.add('ph-list');
+                });
+            });
+
+            // --- Scroll Reveal Animation ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -20px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); 
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => {
+                revealOnScroll.observe(el);
+            });
+
+            // Fallback: Force reveal after a short delay in case IntersectionObserver fails in sandbox/iframe
+            setTimeout(() => {
+                revealElements.forEach(el => el.classList.add('active'));
+            }, 1000);
+
+            // --- Navbar Dynamic Padding ---
+            const navContainer = document.getElementById('navbar-container');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navContainer.classList.replace('top-6', 'top-4');
+                } else {
+                    navContainer.classList.replace('top-4', 'top-6');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
