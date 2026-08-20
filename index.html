@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shekhar — Developer, Builder, Tech Enthusiast</title>
+    <meta name="description" content="Portfolio of Shekhar — 17-year-old developer and builder from Assam. Apps, websites, tools and games.">
+    <meta name="theme-color" content="#06070b">
+    <meta property="og:title" content="Shekhar — Developer, Builder, Tech Enthusiast">
+    <meta property="og:description" content="Apps, websites, tools and games built by a 17-year-old from Assam.">
+    <meta property="og:type" content="website">
+
+    <!-- NOTE: the Tailwind CDN is a dev/prototype build. For production, install Tailwind
+         via npm and ship a compiled stylesheet — it removes the console warning and is far smaller. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Registering the palette as real colors is what makes `bg-accent/10`, `border-accent/20`
+        // etc. work. Tailwind cannot apply an opacity modifier to a raw `var(--x)` color, so the
+        // original `bg-[var(--neon-cyan)]/8` classes were being dropped entirely.
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink:     { 900: '#06070b', 800: '#0a0c14', 700: '#11151f' },
+                        accent:  '#22d3ee',
+                        violet:  '#a78bfa',
+                        emerald: '#34d399',
+                        rose:    '#fb7185',
+                        amber:   '#f59e0b',
+                        mist:    '#dbe4ee',
+                        dim:     '#78838f',
+                        line:    'rgba(150,180,205,0.10)'
+                    },
+                    fontFamily: {
+                        display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+                        body:    ['Inter', 'system-ui', 'sans-serif'],
+                        mono:    ['"JetBrains Mono"', 'ui-monospace', 'monospace']
+                    },
+                    letterSpacing: { tightest: '-0.045em' }
+                }
+            }
+        };
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+
+        :root{
+            /* refined palette — same dark base, neon dialled back from pure/fluorescent values */
+            --accent:#22d3ee; --violet:#a78bfa; --emerald:#34d399; --rose:#fb7185; --amber:#f59e0b;
+            --bg:#06070b; --bg-2:#0a0c14; --card:rgba(12,15,24,0.72);
+            --line:rgba(150,180,205,0.10); --line-soft:rgba(150,180,205,0.05);
+            --text:#dbe4ee; --dim:#78838f;
+            --depth:1200px;
+        }
+
+        html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+        /* native anchor scrolling that accounts for the fixed nav (replaces brittle JS offset math) */
+        section[id]{scroll-margin-top:88px}
+        body{
+            background:var(--bg); color:var(--text);
+            font-family:'Inter',system-ui,sans-serif; font-size:16px; line-height:1.6;
+            overflow-x:hidden; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+        }
+        body.cursor-custom{cursor:none}
+        img{display:block;max-width:100%}
+        a{text-decoration:none}
+        :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+        ::selection{background:rgba(34,211,238,0.25);color:#fff}
+        ::-webkit-scrollbar{width:8px}
+        ::-webkit-scrollbar-track{background:#06070b}
+        ::-webkit-scrollbar-thumb{background:rgba(34,211,238,0.25);border-radius:8px}
+        ::-webkit-scrollbar-thumb:hover{background:rgba(34,211,238,0.45)}
+
+        /* ============ TYPE ============ */
+        .display{font-family:'Space Grotesk',system-ui,sans-serif;letter-spacing:-0.03em;line-height:1.02}
+        .mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+        .label{
+            font-family:'JetBrains Mono',ui-monospace,monospace;
+            font-size:0.625rem;letter-spacing:0.24em;text-transform:uppercase;
+            color:var(--accent);opacity:0.75
+        }
+        .lede{color:var(--dim);font-size:1.0625rem;line-height:1.7;font-weight:300}
+
+        /* ============ CURSOR ============ */
+        .cursor-dot{
+            position:fixed;top:0;left:0;width:5px;height:5px;border-radius:50%;
+            background:var(--accent);pointer-events:none;z-index:9999;opacity:0;
+            box-shadow:0 0 8px rgba(34,211,238,0.8)
+        }
+        .cursor-ring{
+            position:fixed;top:0;left:0;width:34px;height:34px;border-radius:50%;
+            border:1px solid rgba(34,211,238,0.35);pointer-events:none;z-index:9998;opacity:0;
+            transition:width .25s cubic-bezier(.16,1,.3,1),height .25s cubic-bezier(.16,1,.3,1),
+                       border-color .25s,background-color .25s
+        }
+        .cursor-ring.is-hover{
+            width:52px;height:52px;border-color:rgba(52,211,153,0.5);
+            background:rgba(52,211,153,0.05)
+        }
+        .cursor-dot.is-ready,.cursor-ring.is-ready{opacity:1}
+
+        /* ============ BACKDROP LAYERS ============ */
+        #hero-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
+        .veil{position:absolute;inset:0;z-index:1;pointer-events:none;
+            background:radial-gradient(ellipse 90% 60% at 50% 45%,transparent 0%,rgba(6,7,11,0.55) 70%,var(--bg) 100%)}
+        .grid-floor{
+            position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.35;
+            background-image:linear-gradient(rgba(34,211,238,0.055) 1px,transparent 1px),
+                             linear-gradient(90deg,rgba(34,211,238,0.055) 1px,transparent 1px);
+            background-size:72px 72px;
+            mask-image:radial-gradient(ellipse 80% 50% at 50% 0%,#000 10%,transparent 75%);
+            -webkit-mask-image:radial-gradient(ellipse 80% 50% at 50% 0%,#000 10%,transparent 75%)
+        }
+        .scanlines{
+            position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0.35;
+            background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(34,211,238,0.014) 3px,rgba(34,211,238,0.014) 4px)
+        }
+        .orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+        @keyframes drift{
+            0%,100%{transform:translate3d(0,0,0) scale(1)}
+            33%{transform:translate3d(28px,-36px,0) scale(1.08)}
+            66%{transform:translate3d(-22px,18px,0) scale(0.94)}
+        }
+        .orb-drift{animation:drift 18s ease-in-out infinite}
+
+        /* ============ 3D PRIMITIVES ============ */
+        .scene{perspective:var(--depth);perspective-origin:50% 50%}
+        .tilt{
+            transform-style:preserve-3d;
+            transform:rotateX(0deg) rotateY(0deg) translateZ(0);
+            transition:transform .5s cubic-bezier(.16,1,.3,1),border-color .35s,box-shadow .5s
+        }
+        .tilt.is-live{transition:border-color .35s,box-shadow .5s}
+        .tilt>*{transform-style:preserve-3d}
+        /* Depth layers. translateZ is the base; the tilt script adds a parallax translate on top so
+           the depth still reads on surfaces where overflow/backdrop-filter forces flattening. */
+        .lift-1{transform:translateZ(18px)}
+        .lift-2{transform:translateZ(34px)}
+        .lift-3{transform:translateZ(52px)}
+        .glare{
+            position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
+            transition:opacity .4s;z-index:3;mix-blend-mode:screen;
+            background:radial-gradient(340px circle at var(--gx,50%) var(--gy,50%),rgba(140,220,255,0.09),transparent 65%)
+        }
+        .tilt:hover .glare{opacity:1}
+
+        /* ============ SURFACES ============ */
+        .glass{
+            background:rgba(11,14,22,0.62);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+            border:1px solid var(--line)
+        }
+        .glass-strong{
+            background:rgba(9,11,18,0.9);backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);
+            border:1px solid var(--line)
+        }
+        .card{
+            position:relative;overflow:hidden;border-radius:16px;
+            background:linear-gradient(180deg,rgba(17,21,32,0.78),rgba(9,11,18,0.72));
+            border:1px solid var(--line);
+            box-shadow:0 1px 0 rgba(255,255,255,0.03) inset,0 18px 40px -30px rgba(0,0,0,0.9)
+        }
+        .card::before{
+            content:'';position:absolute;top:0;left:10%;right:10%;height:1px;z-index:2;
+            background:linear-gradient(90deg,transparent,rgba(34,211,238,0.35),transparent)
+        }
+        .card:hover{border-color:rgba(34,211,238,0.22);box-shadow:0 30px 70px -40px rgba(0,0,0,1),0 0 50px -30px rgba(34,211,238,0.35)}
+        .card-lg{border-radius:20px}
+
+        .hud{position:relative}
+        .hud::before,.hud::after{
+            content:'';position:absolute;width:14px;height:14px;
+            border-color:var(--accent);opacity:0.35;pointer-events:none;z-index:2
+        }
+        .hud::before{top:8px;left:8px;border-top:1px solid;border-left:1px solid}
+        .hud::after{bottom:8px;right:8px;border-bottom:1px solid;border-right:1px solid}
+
+        .rule{height:1px;background:linear-gradient(90deg,var(--accent),transparent);opacity:0.4}
+
+        /* ============ TAGS ============ */
+        .tag{
+            display:inline-flex;align-items:center;gap:.35rem;
+            padding:.22rem .6rem;border-radius:6px;
+            font-family:'JetBrains Mono',ui-monospace,monospace;
+            font-size:.5625rem;font-weight:500;letter-spacing:.13em;text-transform:uppercase;
+            border:1px solid rgba(34,211,238,0.18);background:rgba(34,211,238,0.06);color:var(--accent);
+            transition:transform .25s,border-color .25s,background-color .25s
+        }
+        .tag:hover{transform:translateY(-1px);border-color:rgba(34,211,238,0.4);background:rgba(34,211,238,0.1)}
+        .tag.v{border-color:rgba(167,139,250,0.18);background:rgba(167,139,250,0.06);color:var(--violet)}
+        .tag.e{border-color:rgba(52,211,153,0.18);background:rgba(52,211,153,0.06);color:var(--emerald)}
+        .tag.r{border-color:rgba(251,113,133,0.18);background:rgba(251,113,133,0.06);color:var(--rose)}
+        .tag.a{border-color:rgba(245,158,11,0.2);background:rgba(245,158,11,0.06);color:var(--amber)}
+
+        /* ============ BUTTONS (3D press) ============ */
+        .btn{
+            position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+            padding:.7rem 1.25rem;border-radius:10px;
+            font-family:'JetBrains Mono',ui-monospace,monospace;
+            font-size:.6875rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+            border:1px solid rgba(34,211,238,0.2);background:rgba(34,211,238,0.05);color:var(--accent);
+            transform-style:preserve-3d;
+            transition:transform .3s cubic-bezier(.16,1,.3,1),background-color .3s,border-color .3s,box-shadow .3s
+        }
+        .btn:hover{
+            background:rgba(34,211,238,0.1);border-color:rgba(34,211,238,0.45);
+            transform:translateZ(14px) translateY(-2px);box-shadow:0 12px 26px -14px rgba(34,211,238,0.5)
+        }
+        .btn:active{transform:translateZ(4px) translateY(0);transition-duration:.08s}
+        .btn svg{flex-shrink:0}
+        .btn-solid{background:var(--accent);border-color:var(--accent);color:#04141a;font-weight:600}
+        .btn-solid:hover{background:#67e8f9;border-color:#67e8f9;box-shadow:0 14px 30px -12px rgba(34,211,238,0.6)}
+        .btn-e{border-color:rgba(52,211,153,0.22);background:rgba(52,211,153,0.06);color:var(--emerald)}
+        .btn-e:hover{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,0.45);box-shadow:0 12px 26px -14px rgba(52,211,153,0.5)}
+        .btn-v{border-color:rgba(167,139,250,0.22);background:rgba(167,139,250,0.06);color:var(--violet)}
+        .btn-v:hover{background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.45);box-shadow:0 12px 26px -14px rgba(167,139,250,0.5)}
+        .btn-r{border-color:rgba(251,113,133,0.22);background:rgba(251,113,133,0.06);color:var(--rose)}
+        .btn-r:hover{background:rgba(251,113,133,0.12);border-color:rgba(251,113,133,0.45);box-shadow:0 12px 26px -14px rgba(251,113,133,0.5)}
+
+        /* ============ NAV ============ */
+        .nav-shell{
+            background:rgba(6,7,11,0.72);backdrop-filter:blur(20px) saturate(160%);
+            -webkit-backdrop-filter:blur(20px) saturate(160%);
+            border:1px solid var(--line);transition:box-shadow .4s,background-color .4s
+        }
+        .nav-shell.is-stuck{background:rgba(6,7,11,0.9);box-shadow:0 12px 40px -24px rgba(0,0,0,1)}
+        .nav-link{
+            position:relative;display:inline-block;
+            font-family:'JetBrains Mono',ui-monospace,monospace;
+            font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;
+            color:var(--dim);padding:.45rem .7rem;border-radius:7px;transition:color .3s,background-color .3s
+        }
+        .nav-link:hover{color:var(--accent);background:rgba(34,211,238,0.06)}
+        .nav-link::after{
+            content:'';position:absolute;left:50%;bottom:2px;width:0;height:1px;
+            background:var(--accent);transform:translateX(-50%);transition:width .3s
+        }
+        .nav-link:hover::after,.nav-link.is-active::after{width:calc(100% - 1.4rem)}
+        .nav-link.is-active{color:var(--accent)}
+
+        /* ============ GLITCH (subtler) ============ */
+        @keyframes glitch-a{
+            0%,92%,100%{transform:translate(0,0);opacity:.55}
+            94%{transform:translate(-2px,-1px);opacity:.9}
+            96%{transform:translate(2px,1px);opacity:.7}
+            98%{transform:translate(-1px,1px);opacity:.85}
+        }
+        @keyframes glitch-b{
+            0%,90%,100%{transform:translate(0,0);opacity:.5}
+            93%{transform:translate(2px,1px);opacity:.85}
+            95%{transform:translate(-2px,-1px);opacity:.65}
+            97%{transform:translate(1px,-1px);opacity:.8}
+        }
+        .glitch{position:relative;display:inline-block;isolation:isolate}
+        .glitch::before,.glitch::after{
+            content:attr(data-text);position:absolute;top:0;left:0;width:100%;
+            pointer-events:none;z-index:-1
+        }
+        .glitch::before{color:var(--rose);animation:glitch-a 7s infinite steps(1)}
+        .glitch::after{color:var(--accent);animation:glitch-b 5.5s infinite steps(1)}
+
+        /* ============ PORTRAIT RIG (real 3D) ============ */
+        .rig{position:relative;width:100%;max-width:340px;aspect-ratio:1/1;transform-style:preserve-3d}
+        .ring{
+            position:absolute;inset:0;border-radius:50%;border:1px solid rgba(34,211,238,0.18);
+            transform-style:preserve-3d
+        }
+        .ring-2{inset:-18px;border-color:rgba(167,139,250,0.14);border-style:solid}
+        .ring-3{inset:-38px;border-color:rgba(34,211,238,0.1);border-style:dashed}
+        @keyframes orbit{from{transform:rotateZ(0deg)}to{transform:rotateZ(360deg)}}
+        .ring-spin{animation:orbit 26s linear infinite}
+        .ring-spin-rev{animation:orbit 38s linear infinite reverse}
+        .ring-spin-slow{animation:orbit 60s linear infinite}
+        .portrait{
+            position:absolute;inset:0;border-radius:50%;overflow:hidden;
+            border:1px solid rgba(34,211,238,0.2);
+            box-shadow:0 30px 80px -40px rgba(0,0,0,1),0 0 60px -30px rgba(34,211,238,0.35);
+            background:#0a0c14
+        }
+        /* Image + fallback pattern: the fallback sits in the DOM *underneath* the image.
+           If the file is missing, the <img> removes itself and the fallback is revealed —
+           no escaped quotes inside an HTML attribute, and no onerror loop. */
+        .portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+        .portrait-fallback{
+            width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+            background:radial-gradient(circle at 50% 35%,#151a27,#080a11);
+            font-family:'Space Grotesk',sans-serif;font-size:5rem;font-weight:700;
+            color:rgba(34,211,238,0.35);letter-spacing:-0.05em
+        }
+        .node{
+            position:absolute;width:8px;height:8px;border-radius:50%;background:var(--accent);
+            box-shadow:0 0 12px rgba(34,211,238,0.9);top:-4px;left:calc(50% - 4px)
+        }
+        .node-v{background:var(--violet);box-shadow:0 0 12px rgba(167,139,250,0.9)}
+
+        /* ============ LOGO MARK ============ */
+        .logo-box{
+            width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+            border:1px solid rgba(34,211,238,0.25);background:rgba(34,211,238,0.06);
+            transform-style:preserve-3d;transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s
+        }
+        a:hover>.logo-box{transform:rotateY(28deg) rotateX(-12deg) translateZ(10px);box-shadow:-8px 8px 22px -12px rgba(34,211,238,0.7)}
+        .thumb{
+            display:block;position:relative;overflow:hidden;border-radius:12px;border:1px solid var(--line);
+            background:#080a11;aspect-ratio:16/9
+        }
+        .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+        .card:hover .thumb img{transform:scale(1.05)}
+        .thumb-empty{
+            position:absolute;inset:0;display:grid;place-items:center;
+            background:repeating-linear-gradient(45deg,#0a0d15,#0a0d15 10px,#0c1019 10px,#0c1019 20px)
+        }
+        .logo-chip{
+            position:relative;
+            width:52px;height:52px;border-radius:13px;display:grid;place-items:center;overflow:hidden;
+            border:1px solid rgba(34,211,238,0.18);background:rgba(34,211,238,0.05);
+            font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--accent)
+        }
+        .logo-chip img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+        /* ============ STATS ============ */
+        .stat{font-family:'Space Grotesk',sans-serif;font-size:2.25rem;font-weight:700;line-height:1;letter-spacing:-0.04em}
+
+        /* ============ TIMELINE ============ */
+        .dot{
+            width:9px;height:9px;border-radius:50%;background:var(--accent);flex-shrink:0;
+            box-shadow:0 0 0 4px var(--bg),0 0 14px rgba(34,211,238,0.6)
+        }
+        .dot-dim{width:8px;height:8px;border-radius:50%;background:#242a38;flex-shrink:0;box-shadow:0 0 0 4px var(--bg)}
+        @keyframes halo{
+            0%,100%{box-shadow:0 0 0 4px var(--bg),0 0 0 5px rgba(34,211,238,0.35),0 0 16px rgba(34,211,238,0.5)}
+            50%{box-shadow:0 0 0 4px var(--bg),0 0 0 9px rgba(34,211,238,0),0 0 26px rgba(34,211,238,0.7)}
+        }
+        .dot-live{width:14px;height:14px;border-radius:50%;background:var(--accent);animation:halo 2.6s ease-in-out infinite}
+
+        /* ============ REVEAL ============ */
+        .reveal{opacity:0;transform:translate3d(0,26px,0);will-change:opacity,transform;
+            transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+        .reveal.is-visible{opacity:1;transform:none;will-change:auto}
+
+        /* ============ PROGRESS + HUD CHROME ============ */
+        .progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:100;transform-origin:0 50%;
+            transform:scaleX(0);background:linear-gradient(90deg,var(--accent),var(--violet),var(--rose))}
+        .fx-toggle{
+            position:fixed;right:14px;bottom:14px;z-index:90;
+            display:inline-flex;align-items:center;gap:.45rem;padding:.5rem .7rem;border-radius:9px;
+            font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.5625rem;letter-spacing:.14em;
+            text-transform:uppercase;color:var(--dim);
+            background:rgba(9,11,18,0.85);border:1px solid var(--line);
+            backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+            cursor:pointer;transition:color .3s,border-color .3s
+        }
+        .fx-toggle:hover{color:var(--accent);border-color:rgba(34,211,238,0.3)}
+        .fx-dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 8px rgba(52,211,153,0.8)}
+        .fx-off .fx-dot{background:#3a4250;box-shadow:none}
+        .scroll-cue{width:1px;height:44px;background:linear-gradient(to bottom,var(--accent),transparent);opacity:.5}
+
+        @keyframes float{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-9px,0)}}
+        .floaty{animation:float 5s ease-in-out infinite}
+
+        /* ============ MOBILE MENU ============ */
+        .sheet{
+            position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;
+            align-items:center;justify-content:center;gap:1.75rem;
+            background:rgba(6,7,11,0.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+            opacity:0;pointer-events:none;visibility:hidden;
+            transition:opacity .35s cubic-bezier(.16,1,.3,1),visibility .35s
+        }
+        .sheet.is-open{opacity:1;pointer-events:auto;visibility:visible}
+        .sheet a{
+            font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:600;letter-spacing:-0.02em;
+            color:var(--dim);transform:translateY(14px);opacity:0;
+            transition:color .25s,transform .5s cubic-bezier(.16,1,.3,1),opacity .5s
+        }
+        .sheet.is-open a{transform:none;opacity:1}
+        .sheet.is-open a:nth-child(1){transition-delay:.06s}
+        .sheet.is-open a:nth-child(2){transition-delay:.12s}
+        .sheet.is-open a:nth-child(3){transition-delay:.18s}
+        .sheet.is-open a:nth-child(4){transition-delay:.24s}
+        .sheet a:hover{color:var(--accent)}
+        body.is-locked{overflow:hidden}
+
+        /* ============ MOTION / INPUT PREFERENCES ============ */
+        @media (hover:none),(pointer:coarse){
+            .cursor-dot,.cursor-ring{display:none}
+            body.cursor-custom{cursor:auto}
+            .fx-toggle{display:none}
+        }
+        @media (prefers-reduced-motion:reduce){
+            *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+                transition-duration:.001ms!important;scroll-behavior:auto!important}
+            .reveal{opacity:1;transform:none}
+        }
+        /* Effects disabled by the HUD toggle */
+        body.fx-off .orb-drift,body.fx-off .ring-spin,body.fx-off .ring-spin-rev,
+        body.fx-off .ring-spin-slow,body.fx-off .floaty,body.fx-off .dot-live,
+        body.fx-off .glitch::before,body.fx-off .glitch::after{animation:none}
+        body.fx-off .glitch::before,body.fx-off .glitch::after{display:none}
+        body.fx-off .tilt{transform:none!important}
+        body.fx-off .scanlines,body.fx-off .grid-floor{display:none}
+        body.fx-off .cursor-dot,body.fx-off .cursor-ring{display:none}
+        body.fx-off.cursor-custom{cursor:auto}
+
+        @media (max-width:768px){
+            .stat{font-size:1.75rem}
+            .glare{display:none}
+        }
+    </style>
+</head>
+<body class="font-body">
+
+    <!-- scroll progress -->
+    <div class="progress" id="progress"></div>
+
+    <!-- custom cursor -->
+    <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+
+    <!-- persistent backdrop chrome -->
+    <div class="grid-floor" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <!-- ======================= NAV ======================= -->
+    <nav class="fixed top-3 inset-x-0 z-50 px-4 sm:px-6 flex justify-center scene">
+        <div id="nav-shell" class="nav-shell w-full max-w-5xl rounded-xl pl-4 pr-3 py-2.5 flex items-center justify-between">
+            <a href="#home" class="flex items-center gap-3" aria-label="Shekhar — back to top">
+                <span class="logo-box">
+                    <span class="display text-accent text-sm font-bold">S</span>
+                </span>
+                <span class="display text-mist text-[0.95rem] font-semibold tracking-tight">Shekhar</span>
+            </a>
+
+            <div class="hidden md:flex items-center gap-0.5" id="nav-links">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#projects" class="nav-link">Work</a>
+                <a href="#journey" class="nav-link">Journey</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <a href="#contact" class="hidden md:inline-flex btn py-2 px-3.5 text-[0.625rem]">Hire me</a>
+                <button id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu-sheet"
+                        class="md:hidden w-9 h-9 rounded-lg border border-accent/20 bg-accent/5 text-accent/70 grid place-items-center transition-colors hover:text-accent">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- mobile sheet -->
+    <div class="sheet" id="menu-sheet" role="dialog" aria-modal="true" aria-label="Navigation">
+        <a href="#about">About</a>
+        <a href="#projects">Work</a>
+        <a href="#journey">Journey</a>
+        <a href="#contact">Contact</a>
+        <button id="menu-close" type="button" class="btn mt-4 py-2" aria-label="Close menu">Close</button>
+    </div>
+
+    <!-- ======================= HERO ======================= -->
+    <section id="home" class="relative min-h-screen flex items-center overflow-hidden">
+        <!-- WebGL scene (falls back to canvas 2D, see script) -->
+        <canvas id="hero-canvas" aria-hidden="true"></canvas>
+        <div class="veil" aria-hidden="true"></div>
+
+        <div class="orb orb-drift w-[520px] h-[520px] bg-accent/10 -top-32 -left-28" aria-hidden="true"></div>
+        <div class="orb orb-drift w-[420px] h-[420px] bg-violet/10 top-40 -right-24" style="animation-delay:6s" aria-hidden="true"></div>
+        <div class="orb orb-drift w-[300px] h-[300px] bg-rose/[0.07] bottom-24 left-1/3" style="animation-delay:12s" aria-hidden="true"></div>
+
+        <div class="relative z-10 w-full max-w-6xl mx-auto px-6 pt-28 pb-20">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-10 items-center scene">
+
+                <!-- copy -->
+                <div class="lg:col-span-7 text-center lg:text-left">
+                    <div class="reveal inline-flex items-center gap-2.5 px-3 py-1.5 rounded-lg border border-emerald/20 bg-emerald/[0.06] mb-8">
+                        <span class="relative flex h-1.5 w-1.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald opacity-70"></span>
+                            <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald"></span>
+                        </span>
+                        <span class="mono text-[0.5625rem] tracking-[0.2em] uppercase text-emerald">Available for work</span>
+                    </div>
+
+                    <h1 class="reveal display text-mist text-[3.25rem] sm:text-7xl lg:text-[5.5rem] font-bold mb-5">
+                        <span class="glitch" data-text="Shekhar">Shekhar</span>
+                    </h1>
+
+                    <p class="reveal mono text-[0.8125rem] tracking-[0.18em] uppercase mb-6">
+                        <span class="text-accent">Developer</span>
+                        <span class="text-dim/50 mx-1.5">/</span>
+                        <span class="text-violet">Builder</span>
+                        <span class="text-dim/50 mx-1.5">/</span>
+                        <span class="text-emerald">Tech&nbsp;Enthusiast</span>
+                    </p>
+
+                    <p class="reveal lede max-w-xl mx-auto lg:mx-0 mb-9">
+                        17-year-old builder from Assam. Crafting apps, websites, and games — obsessed with
+                        turning ideas into real products that people actually use.
+                    </p>
+
+                    <div class="reveal flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 mb-12 scene">
+                        <a href="#projects" class="btn btn-solid px-6 py-3">
+                            View work
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </a>
+                        <a href="#contact" class="btn px-6 py-3">Get in touch</a>
+                    </div>
+
+                    <dl class="reveal flex items-center justify-center lg:justify-start gap-8 sm:gap-10" id="stats">
+                        <div>
+                            <dd class="stat text-accent" data-count="7" data-suffix="+">7+</dd>
+                            <dt class="mono text-[0.5625rem] text-dim tracking-[0.2em] uppercase mt-2">Projects</dt>
+                        </div>
+                        <div class="w-px h-9 bg-line" aria-hidden="true"></div>
+                        <div>
+                            <dd class="stat text-violet" data-count="5" data-suffix="+">5+</dd>
+                            <dt class="mono text-[0.5625rem] text-dim tracking-[0.2em] uppercase mt-2">Languages</dt>
+                        </div>
+                        <div class="w-px h-9 bg-line" aria-hidden="true"></div>
+                        <div>
+                            <dd class="stat text-emerald" data-count="1" data-suffix="">1</dd>
+                            <dt class="mono text-[0.5625rem] text-dim tracking-[0.2em] uppercase mt-2">Game</dt>
+                        </div>
+                    </dl>
+                </div>
+
+                <!-- portrait rig -->
+                <div class="lg:col-span-5 flex justify-center reveal">
+                    <div class="rig tilt" data-tilt data-tilt-max="12">
+                        <div class="ring ring-3 ring-spin-slow" aria-hidden="true"></div>
+                        <div class="ring ring-2 ring-spin-rev" aria-hidden="true"><span class="node node-v"></span></div>
+                        <div class="ring ring-spin" aria-hidden="true"><span class="node"></span></div>
+
+                        <div class="portrait">
+                            <div class="portrait-fallback" aria-hidden="true">S</div>
+                            <img src="image/photo.png" alt="Portrait of Shekhar" width="340" height="340" onerror="this.remove()">
+                            <div class="absolute inset-0 bg-gradient-to-t from-ink-900 via-transparent to-transparent opacity-70" aria-hidden="true"></div>
+                        </div>
+
+                        <div class="absolute -bottom-3 -right-2 sm:-right-4 glass-strong rounded-xl px-3.5 py-2.5 flex items-center gap-2.5 floaty lift-3">
+                            <span class="w-7 h-7 rounded-lg border border-emerald/25 bg-emerald/10 grid place-items-center">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald animate-pulse"></span>
+                            </span>
+                            <span>
+                                <span class="block mono text-[0.5rem] text-dim tracking-[0.2em] uppercase">Status</span>
+                                <span class="block mono text-[0.6875rem] text-emerald font-medium tracking-wider">Building</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="#about" class="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2.5 opacity-40 hover:opacity-90 transition-opacity" aria-label="Scroll to about">
+            <span class="scroll-cue" aria-hidden="true"></span>
+            <span class="mono text-[0.5rem] tracking-[0.3em] uppercase text-accent">Scroll</span>
+        </a>
+    </section>
+
+    <!-- ======================= PHILOSOPHY ======================= -->
+    <section class="relative py-24 border-y border-line">
+        <div class="max-w-3xl mx-auto px-6 text-center reveal">
+            <p class="label mb-6">Philosophy</p>
+            <blockquote class="display text-mist text-[1.75rem] sm:text-4xl font-semibold leading-[1.2] mb-6">
+                &ldquo;Dead son is better<br>than failed son.&rdquo;
+            </blockquote>
+            <span class="block w-16 h-px mx-auto bg-gradient-to-r from-transparent via-accent to-transparent mb-4" aria-hidden="true"></span>
+            <cite class="mono text-[0.625rem] text-dim tracking-[0.22em] uppercase not-italic">Good man.</cite>
+        </div>
+    </section>
+
+    <!-- ======================= ABOUT ======================= -->
+    <section id="about" class="relative py-24 sm:py-28">
+        <div class="max-w-6xl mx-auto px-6">
+            <header class="reveal mb-14">
+                <p class="label mb-3">01 / Identity</p>
+                <h2 class="display text-mist text-4xl sm:text-5xl font-bold mb-4">About me</h2>
+                <span class="block w-14 rule" aria-hidden="true"></span>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-12 scene">
+                <div class="lg:col-span-3 reveal space-y-5 text-[0.9375rem] leading-relaxed">
+                    <p>I am <span class="text-accent font-medium">Shekhar</span>, a Class 12 student from Assam currently studying at <span class="text-mist font-medium">Srikishan Sarda College</span>. I completed my schooling from Nursery to Class 10 at Skylark English Medium School.</p>
+                    <p>I am deeply interested in technology and software development. I currently know <span class="text-mist font-medium">Python, C, HTML, CSS, Java, JavaScript, C#, and Unity Engine</span>.</p>
+                    <p>I enjoy <span class="text-accent font-medium">building things</span> rather than simply learning theory. I have explored web development, application development, game development, AI-assisted development, and I am now diving deeper into backend engineering.</p>
+                    <p class="text-dim">I am still learning, experimenting, breaking things, rebuilding them, and turning ideas into working products.</p>
+                </div>
+
+                <div class="lg:col-span-2 reveal">
+                    <div class="card card-lg hud tilt p-6" data-tilt data-tilt-max="9">
+                        <span class="glare" aria-hidden="true"></span>
+                        <div class="absolute -top-16 -right-16 w-40 h-40 rounded-full bg-accent/10 blur-[60px]" aria-hidden="true"></div>
+                        <div class="relative lift-1">
+                            <p class="label mb-5">Profile / Summary</p>
+                            <dl class="text-[0.8125rem]">
+                                <div class="flex justify-between items-center gap-4 py-2.5 border-b border-line">
+                                    <dt class="mono text-[0.625rem] text-dim tracking-wider">NAME</dt><dd class="text-mist font-medium">Shekhar</dd>
+                                </div>
+                                <div class="flex justify-between items-center gap-4 py-2.5 border-b border-line">
+                                    <dt class="mono text-[0.625rem] text-dim tracking-wider">AGE</dt><dd class="text-mist font-medium">17</dd>
+                                </div>
+                                <div class="flex justify-between items-center gap-4 py-2.5 border-b border-line">
+                                    <dt class="mono text-[0.625rem] text-dim tracking-wider">LOCATION</dt><dd class="text-mist font-medium">Assam, India</dd>
+                                </div>
+                                <div class="flex justify-between items-center gap-4 py-2.5 border-b border-line">
+                                    <dt class="mono text-[0.625rem] text-dim tracking-wider">EDUCATION</dt><dd class="text-mist font-medium">Class 12 (AHSEC)</dd>
+                                </div>
+                                <div class="flex justify-between items-center gap-4 py-2.5 border-b border-line">
+                                    <dt class="mono text-[0.625rem] text-dim tracking-wider">COLLEGE</dt><dd class="text-mist font-medium">Srikishan Sarda</dd>
+                                </div>
+                                <div class="flex justify-between items-center gap-4 py-2.5 border-b border-line">
+                                    <dt class="mono text-[0.625rem] text-dim tracking-wider">FOCUS</dt><dd class="text-mist font-medium">Software Dev</dd>
+                                </div>
+                                <div class="flex justify-between items-center gap-4 pt-3">
+                                    <dt class="mono text-[0.625rem] text-dim tracking-wider">STATUS</dt>
+                                    <dd><span class="tag e"><span class="w-1.5 h-1.5 rounded-full bg-emerald animate-pulse"></span>Active</span></dd>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- skills -->
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-5 scene">
+                <div class="reveal card hud tilt p-6" data-tilt data-tilt-max="10">
+                    <span class="glare" aria-hidden="true"></span>
+                    <div class="lift-1">
+                        <div class="flex items-center gap-2.5 mb-5">
+                            <span class="w-8 h-8 rounded-lg border border-accent/20 bg-accent/5 grid place-items-center">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                            </span>
+                            <h3 class="mono text-[0.6875rem] text-mist font-medium tracking-[0.14em] uppercase">Languages</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="tag">Python</span><span class="tag">C</span><span class="tag">Java</span><span class="tag">JavaScript</span><span class="tag">C#</span><span class="tag">HTML</span><span class="tag">CSS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal card hud tilt p-6" data-tilt data-tilt-max="10">
+                    <span class="glare" aria-hidden="true"></span>
+                    <div class="lift-1">
+                        <div class="flex items-center gap-2.5 mb-5">
+                            <span class="w-8 h-8 rounded-lg border border-violet/20 bg-violet/5 grid place-items-center">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                            </span>
+                            <h3 class="mono text-[0.6875rem] text-mist font-medium tracking-[0.14em] uppercase">Technologies</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="tag v">GitHub</span><span class="tag v">Flask</span><span class="tag v">AI</span><span class="tag v">Unity</span><span class="tag v">Web Dev</span><span class="tag v">App Dev</span><span class="tag v">Backend</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal card hud tilt p-6" data-tilt data-tilt-max="10">
+                    <span class="glare" aria-hidden="true"></span>
+                    <div class="lift-1">
+                        <div class="flex items-center gap-2.5 mb-5">
+                            <span class="w-8 h-8 rounded-lg border border-emerald/20 bg-emerald/5 grid place-items-center">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" aria-hidden="true"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                            </span>
+                            <h3 class="mono text-[0.6875rem] text-mist font-medium tracking-[0.14em] uppercase">Tools</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="tag e">VS Code</span><span class="tag e">GitHub</span><span class="tag e">Vercel</span><span class="tag e">Android Studio</span><span class="tag e">Unity Engine</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= PROJECTS ======================= -->
+    <section id="projects" class="relative py-24 sm:py-28 border-t border-line">
+        <div class="max-w-6xl mx-auto px-6">
+            <header class="reveal mb-14 text-center">
+                <p class="label mb-3">02 / Portfolio</p>
+                <h2 class="display text-mist text-4xl sm:text-5xl font-bold mb-4">Selected work</h2>
+                <p class="lede max-w-xl mx-auto">I build things rather than simply learning theory. Here are some of the tools, apps, and games I've developed.</p>
+            </header>
+
+            <div class="space-y-5 scene">
+
+                <!-- 01 — Parishrami 2027 -->
+                <article class="reveal card card-lg hud tilt" data-tilt data-tilt-max="5">
+                    <span class="glare" aria-hidden="true"></span>
+                    <div class="flex flex-col lg:flex-row">
+                        <div class="w-full lg:w-[42%] p-7 sm:p-9 flex flex-col lift-1">
+                            <div class="flex items-start justify-between gap-4 mb-6">
+                                <span class="logo-chip">
+                                    <span class="text-lg" aria-hidden="true">P</span>
+                                    <img src="a.png" alt="Parishrami 2027 logo" onerror="this.remove()">
+                                </span>
+                                <span class="mono text-[0.625rem] text-dim/60 tracking-[0.2em]">01 / 07</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1.5 mb-4">
+                                <span class="tag">Edtech</span><span class="tag e">Free</span>
+                            </div>
+                            <h3 class="display text-mist text-2xl sm:text-[1.75rem] font-semibold mb-3">Parishrami 2027</h3>
+                            <p class="text-[0.875rem] text-dim leading-relaxed mb-6">
+                                A 100% free learning platform for Class 12 Science &amp; AHSEC students. Access chapter-wise PYQs, notes, question banks, one-shots, and an in-built AI Tutor for instant doubt clearing. Features a dedicated Assam Board section and a massive Khazana for JEE/NEET/NDA aspirants.
+                            </p>
+                            <ul class="space-y-2 mb-7">
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-accent" aria-hidden="true">&rsaquo;</span><span>Class 12 Science: PYQs, Notes, QB, One-Shots</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-accent" aria-hidden="true">&rsaquo;</span><span>Assam Board (AHSEC) dedicated section</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-accent" aria-hidden="true">&rsaquo;</span><span>Khazana for JEE, NEET &amp; NDA aspirants</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-accent" aria-hidden="true">&rsaquo;</span><span>Built-in AI Bot for instant doubt clearing</span></li>
+                            </ul>
+                            <div class="flex flex-wrap gap-2.5 mt-auto">
+                                <a href="https://parishram2027.site" target="_blank" rel="noopener noreferrer" class="btn btn-solid">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                                    Website
+                                </a>
+                                <a href="a_apk.html" class="btn">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                    APK
+                                </a>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-[58%] border-t lg:border-t-0 lg:border-l border-line p-7 sm:p-9 flex items-center bg-accent/[0.015]">
+                            <div class="w-full grid grid-cols-2 gap-3.5 lift-2">
+                                <span class="thumb">
+                                    <span class="thumb-empty" aria-hidden="true"></span>
+                                    <img src="image/b1.png" alt="Parishrami 2027 dashboard" loading="lazy" onerror="this.remove()">
+                                </span>
+                                <span class="thumb">
+                                    <span class="thumb-empty" aria-hidden="true"></span>
+                                    <img src="image/b2.png" alt="Parishrami 2027 study material view" loading="lazy" onerror="this.remove()">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 02 — Parishram Tracker -->
+                <article class="reveal card card-lg hud tilt" data-tilt data-tilt-max="5">
+                    <span class="glare" aria-hidden="true"></span>
+                    <div class="flex flex-col lg:flex-row-reverse">
+                        <div class="w-full lg:w-[42%] p-7 sm:p-9 flex flex-col lift-1">
+                            <div class="flex items-start justify-between gap-4 mb-6">
+                                <span class="logo-chip border-emerald/20 bg-emerald/5 text-emerald">
+                                    <span class="text-base" aria-hidden="true">PT</span>
+                                    <img src="b.png" alt="Parishram Tracker logo" onerror="this.remove()">
+                                </span>
+                                <span class="mono text-[0.625rem] text-dim/60 tracking-[0.2em]">02 / 07</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1.5 mb-4">
+                                <span class="tag e">Productivity</span><span class="tag">Study</span>
+                            </div>
+                            <h3 class="display text-mist text-2xl sm:text-[1.75rem] font-semibold mb-3">Parishram Tracker</h3>
+                            <p class="text-[0.875rem] text-dim leading-relaxed mb-6">
+                                A smart study tracker built for students preparing for JEE, NEET, CEE, CUET, Boards, and more. Track study hours, manage subjects, set daily goals, build streaks, and analyze your progress — all in one clean, distraction-free app.
+                            </p>
+                            <ul class="space-y-2 mb-7">
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-emerald" aria-hidden="true">&rsaquo;</span><span>Track study hours &amp; manage subjects</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-emerald" aria-hidden="true">&rsaquo;</span><span>Set daily goals &amp; build streaks</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-emerald" aria-hidden="true">&rsaquo;</span><span>Analyze progress with clean analytics</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-emerald" aria-hidden="true">&rsaquo;</span><span>Beat procrastination &amp; stay consistent</span></li>
+                            </ul>
+                            <div class="flex flex-wrap gap-2.5 mt-auto">
+                                <a href="https://parishramtracker.vercel.app" target="_blank" rel="noopener noreferrer" class="btn btn-e">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                                    Website
+                                </a>
+                                <a href="b_apk.html" class="btn">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                    APK
+                                </a>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-[58%] border-t lg:border-t-0 lg:border-r border-line p-7 sm:p-9 flex items-center bg-emerald/[0.015]">
+                            <span class="thumb w-full lift-2">
+                                <span class="thumb-empty" aria-hidden="true"></span>
+                                <img src="image/pt1.png" alt="Parishram Tracker interface" loading="lazy" onerror="this.remove()">
+                            </span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 03 — Lead Tracker -->
+                <article class="reveal card card-lg hud tilt" data-tilt data-tilt-max="5">
+                    <span class="glare" aria-hidden="true"></span>
+                    <div class="flex flex-col lg:flex-row">
+                        <div class="w-full lg:w-[42%] p-7 sm:p-9 flex flex-col lift-1">
+                            <div class="flex items-start justify-between gap-4 mb-6">
+                                <span class="logo-chip border-amber/20 bg-amber/5 text-amber">
+                                    <span class="text-base" aria-hidden="true">LT</span>
+                                    <img src="c.png" alt="Lead Tracker logo" onerror="this.remove()">
+                                </span>
+                                <span class="mono text-[0.625rem] text-dim/60 tracking-[0.2em]">03 / 07</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1.5 mb-4">
+                                <span class="tag a">CRM</span><span class="tag v">AI-powered</span>
+                            </div>
+                            <h3 class="display text-mist text-2xl sm:text-[1.75rem] font-semibold mb-3">Lead Tracker</h3>
+                            <p class="text-[0.875rem] text-dim leading-relaxed mb-6">
+                                A smart, serverless CRM built for freelancers and small businesses. Features an AI Sales Assistant, 1-Click WhatsApp Outreach, and Dynamic Kanban Pipelines that auto-update real-time analytics.
+                            </p>
+                            <ul class="space-y-2 mb-7">
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-amber" aria-hidden="true">&rsaquo;</span><span>AI Sales Assistant for smarter outreach</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-amber" aria-hidden="true">&rsaquo;</span><span>1-Click WhatsApp Outreach</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-amber" aria-hidden="true">&rsaquo;</span><span>Dynamic Kanban Pipelines</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-amber" aria-hidden="true">&rsaquo;</span><span>Real-time analytics dashboard</span></li>
+                            </ul>
+                            <div class="flex flex-wrap gap-2.5 mt-auto">
+                                <a href="https://leadtrackerz.vercel.app" target="_blank" rel="noopener noreferrer" class="btn btn-solid">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                                    Website
+                                </a>
+                                <a href="c_apk.html" class="btn">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                    APK
+                                </a>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-[58%] border-t lg:border-t-0 lg:border-l border-line p-7 sm:p-9 flex items-center bg-amber/[0.015]">
+                            <span class="thumb w-full lift-2">
+                                <span class="thumb-empty" aria-hidden="true"></span>
+                                <img src="image/c2.png" alt="Lead Tracker pipeline view" loading="lazy" onerror="this.remove()">
+                            </span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 04 — Forwardly -->
+                <article class="reveal card card-lg hud tilt" data-tilt data-tilt-max="5">
+                    <span class="glare" aria-hidden="true"></span>
+                    <div class="flex flex-col lg:flex-row-reverse">
+                        <div class="w-full lg:w-[42%] p-7 sm:p-9 flex flex-col lift-1">
+                            <div class="flex items-start justify-between gap-4 mb-6">
+                                <span class="logo-chip">
+                                    <span class="text-base" aria-hidden="true">Fw</span>
+                                    <img src="d.png" alt="Forwardly logo" onerror="this.remove()">
+                                </span>
+                                <span class="mono text-[0.625rem] text-dim/60 tracking-[0.2em]">04 / 07</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1.5 mb-4">
+                                <span class="tag">Android</span><span class="tag v">Real-time</span>
+                            </div>
+                            <h3 class="display text-mist text-2xl sm:text-[1.75rem] font-semibold mb-3">Forwardly</h3>
+                            <p class="text-[0.875rem] text-dim leading-relaxed mb-6">
+                                A secure bridge that forwards every notification (SMS, WhatsApp, Telegram, etc.) from your Android phone to a beautiful PC dashboard in real-time. No refresh needed.
+                            </p>
+                            <ul class="space-y-2 mb-7">
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-accent" aria-hidden="true">&rsaquo;</span><span>Multi-App notification support</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-accent" aria-hidden="true">&rsaquo;</span><span>Instant sync optimized for Android 14</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-accent" aria-hidden="true">&rsaquo;</span><span>Secure auth with Hide/Unhide passwords</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-accent" aria-hidden="true">&rsaquo;</span><span>Full data control &amp; Firebase backend</span></li>
+                            </ul>
+                            <div class="flex flex-wrap gap-2.5 mt-auto">
+                                <a href="d_apk.html" class="btn btn-solid">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                    APK (Sender)
+                                </a>
+                                <a href="https://forwardlybyshekharr.vercel.app" target="_blank" rel="noopener noreferrer" class="btn">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                                    Dashboard
+                                </a>
+                                <a href="https://youtu.be/Y0XER7N3Rh0" target="_blank" rel="noopener noreferrer" class="btn">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                    Tutorial
+                                </a>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-[58%] border-t lg:border-t-0 lg:border-r border-line p-7 sm:p-9 flex items-center bg-accent/[0.015]">
+                            <span class="thumb w-full lift-2">
+                                <span class="thumb-empty" aria-hidden="true"></span>
+                                <img src="image/fw1.png" alt="Forwardly PC dashboard" loading="lazy" onerror="this.remove()">
+                            </span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 05 — Call of Shekhar -->
+                <article class="reveal card card-lg hud tilt" data-tilt data-tilt-max="5">
+                    <span class="glare" aria-hidden="true"></span>
+                    <div class="flex flex-col lg:flex-row">
+                        <div class="w-full lg:w-[42%] p-7 sm:p-9 flex flex-col lift-1">
+                            <div class="flex items-start justify-between gap-4 mb-6">
+                                <span class="logo-chip border-violet/20 bg-violet/5 text-violet">
+                                    <span class="text-sm" aria-hidden="true">CoS</span>
+                                    <img src="e.png" alt="Call of Shekhar logo" onerror="this.remove()">
+                                </span>
+                                <span class="mono text-[0.625rem] text-dim/60 tracking-[0.2em]">05 / 07</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1.5 mb-4">
+                                <span class="tag v">Unity game</span><span class="tag r">Exploration</span>
+                            </div>
+                            <h3 class="display text-mist text-2xl sm:text-[1.75rem] font-semibold mb-1.5">Call of Shekhar</h3>
+                            <p class="mono text-[0.6875rem] text-dim tracking-wider mb-4">// Abandoned Island</p>
+                            <p class="text-[0.875rem] text-dim leading-relaxed mb-6">
+                                You wake up on a quiet island where nothing works like it should. No map. No signal. Just abandoned structures and strange sounds in the distance. Explore the island, discover hidden locations, and piece together what really happened here.
+                            </p>
+                            <ul class="space-y-2 mb-7">
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-violet" aria-hidden="true">&rsaquo;</span><span>Atmosphere-focused exploration</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-violet" aria-hidden="true">&rsaquo;</span><span>Hidden locations &amp; mystery</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-violet" aria-hidden="true">&rsaquo;</span><span>Built with Unity Engine &amp; C#</span></li>
+                                <li class="mono text-[0.6875rem] flex gap-2"><span class="text-violet" aria-hidden="true">&rsaquo;</span><span>Focus on story over combat</span></li>
+                            </ul>
+                            <div class="flex flex-wrap gap-2.5 mt-auto">
+                                <a href="https://sekharwaa.itch.io/call-of-sekhar-abandoned-island" target="_blank" rel="noopener noreferrer" class="btn btn-v">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                    Play game
+                                </a>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-[58%] border-t lg:border-t-0 lg:border-l border-line p-7 sm:p-9 flex items-center bg-violet/[0.015]">
+                            <div class="w-full grid grid-cols-2 gap-3.5 lift-2">
+                                <span class="thumb">
+                                    <span class="thumb-empty" aria-hidden="true"></span>
+                                    <img src="image/d1.png" alt="Call of Shekhar gameplay" loading="lazy" onerror="this.remove()">
+                                </span>
+                                <span class="thumb">
+                                    <span class="thumb-empty" aria-hidden="true"></span>
+                                    <img src="image/d2.png" alt="Call of Shekhar island environment" loading="lazy" onerror="this.remove()">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- 06 + 07 — smaller builds -->
+            <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5 scene">
+                <article class="reveal card card-lg hud tilt p-7 sm:p-8 flex flex-col" data-tilt data-tilt-max="8">
+                    <span class="glare" aria-hidden="true"></span>
+                    <div class="lift-1 flex flex-col h-full">
+                        <div class="flex items-start justify-between gap-4 mb-5">
+                            <div class="flex items-center gap-3.5">
+                                <span class="logo-chip border-rose/20 bg-rose/5 text-rose">
+                                    <span class="text-sm" aria-hidden="true">PDF</span>
+                                    <img src="f.png" alt="PDFly logo" onerror="this.remove()">
+                                </span>
+                                <div>
+                                    <h3 class="display text-mist text-xl font-semibold">PDFly</h3>
+                                    <span class="tag r mt-1.5">PDF tools</span>
+                                </div>
+                            </div>
+                            <span class="mono text-[0.625rem] text-dim/60 tracking-[0.2em]">06 / 07</span>
+                        </div>
+                        <p class="text-[0.875rem] text-dim leading-relaxed mb-5">
+                            All-in-one PDF toolkit. Convert, compress, merge, split, and manipulate PDF files with a clean, modern interface.
+                        </p>
+                        <ul class="space-y-2 mb-7">
+                            <li class="mono text-[0.6875rem] flex gap-2"><span class="text-rose" aria-hidden="true">&rsaquo;</span><span>PDF conversion &amp; creation</span></li>
+                            <li class="mono text-[0.6875rem] flex gap-2"><span class="text-rose" aria-hidden="true">&rsaquo;</span><span>Merge, split &amp; compress</span></li>
+                            <li class="mono text-[0.6875rem] flex gap-2"><span class="text-rose" aria-hidden="true">&rsaquo;</span><span>Image tools included</span></li>
+                        </ul>
+                        <a href="https://pdftoolbyshekhar.vercel.app" target="_blank" rel="noopener noreferrer" class="btn btn-r w-max mt-auto">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                            Visit website
+                        </a>
+                    </div>
+                </article>
+
+                <article class="reveal card card-lg hud tilt p-7 sm:p-8 flex flex-col" data-tilt data-tilt-max="8">
+                    <span class="glare" aria-hidden="true"></span>
+                    <div class="lift-1 flex flex-col h-full">
+                        <div class="flex items-start justify-between gap-4 mb-5">
+                            <div class="flex items-center gap-3.5">
+                                <span class="logo-chip border-emerald/20 bg-emerald/5 text-emerald">
+                                    <span class="text-base" aria-hidden="true">HT</span>
+                                    <img src="g.png" alt="Head Tilt Game logo" onerror="this.remove()">
+                                </span>
+                                <div>
+                                    <h3 class="display text-mist text-xl font-semibold">Head Tilt Game</h3>
+                                    <span class="tag e mt-1.5">Camera-based</span>
+                                </div>
+                            </div>
+                            <span class="mono text-[0.625rem] text-dim/60 tracking-[0.2em]">07 / 07</span>
+                        </div>
+                        <p class="text-[0.875rem] text-dim leading-relaxed mb-5">
+                            An innovative game that uses your camera to track head movements for controls. Tilt your head to play — no keyboard or mouse needed.
+                        </p>
+                        <ul class="space-y-2 mb-7">
+                            <li class="mono text-[0.6875rem] flex gap-2"><span class="text-emerald" aria-hidden="true">&rsaquo;</span><span>Camera-based head tracking</span></li>
+                            <li class="mono text-[0.6875rem] flex gap-2"><span class="text-emerald" aria-hidden="true">&rsaquo;</span><span>Motion-controlled gameplay</span></li>
+                            <li class="mono text-[0.6875rem] flex gap-2"><span class="text-emerald" aria-hidden="true">&rsaquo;</span><span>No external hardware needed</span></li>
+                        </ul>
+                        <a href="https://head-tilter.vercel.app" target="_blank" rel="noopener noreferrer" class="btn btn-e w-max mt-auto">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                            Play now
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= JOURNEY ======================= -->
+    <section id="journey" class="relative py-24 sm:py-28 border-t border-line">
+        <div class="max-w-5xl mx-auto px-6">
+            <header class="reveal mb-14 text-center">
+                <p class="label mb-3">03 / Timeline</p>
+                <h2 class="display text-mist text-4xl sm:text-5xl font-bold mb-4">My journey</h2>
+                <p class="lede max-w-xl mx-auto">The story begins after I bought my laptop. Breaking, fixing, building.</p>
+            </header>
+
+            <div class="relative scene">
+                <span class="absolute left-[3px] sm:left-1/2 sm:-translate-x-1/2 top-0 w-px h-full bg-gradient-to-b from-accent/25 via-accent/10 to-transparent" aria-hidden="true"></span>
+
+                <ol class="space-y-12">
+                    <li class="reveal relative flex flex-col sm:flex-row items-center">
+                        <div class="hidden sm:block w-1/2 pr-12 text-right">
+                            <h3 class="display text-mist text-lg font-semibold">Focus: C</h3>
+                            <p class="label mt-1.5">Quarter 1</p>
+                        </div>
+                        <span class="absolute left-0 sm:left-1/2 sm:-translate-x-1/2 dot-dim z-10" aria-hidden="true"></span>
+                        <div class="w-full sm:w-1/2 pl-7 sm:pl-12">
+                            <div class="glass hud tilt rounded-xl p-5" data-tilt data-tilt-max="7">
+                                <p class="sm:hidden display text-mist text-base font-semibold mb-1">Focus: C <span class="label ml-1">Q1</span></p>
+                                <p class="text-[0.875rem] text-dim leading-relaxed">Learnt C and explored its uses. Started understanding programming fundamentals and explored backend concepts.</p>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="reveal relative flex flex-col sm:flex-row-reverse items-center">
+                        <div class="hidden sm:block w-1/2 pl-12 text-left">
+                            <h3 class="display text-mist text-lg font-semibold">Focus: Python</h3>
+                            <p class="label mt-1.5">Quarter 2</p>
+                        </div>
+                        <span class="absolute left-0 sm:left-1/2 sm:-translate-x-1/2 dot-dim z-10" aria-hidden="true"></span>
+                        <div class="w-full sm:w-1/2 pl-7 sm:pl-0 sm:pr-12 sm:text-right">
+                            <div class="glass hud tilt rounded-xl p-5" data-tilt data-tilt-max="7">
+                                <p class="sm:hidden display text-mist text-base font-semibold mb-1">Focus: Python <span class="label ml-1">Q2</span></p>
+                                <p class="text-[0.875rem] text-dim leading-relaxed">Learnt Python and explored what could be built with it. Started exploring PC games and programming possibilities.</p>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="reveal relative flex flex-col sm:flex-row items-center">
+                        <div class="hidden sm:block w-1/2 pr-12 text-right">
+                            <h3 class="display text-mist text-lg font-semibold">Focus: C# + Unity</h3>
+                            <p class="label mt-1.5">Quarter 3</p>
+                        </div>
+                        <span class="absolute left-0 sm:left-1/2 sm:-translate-x-1/2 dot-dim z-10" aria-hidden="true"></span>
+                        <div class="w-full sm:w-1/2 pl-7 sm:pl-12">
+                            <div class="glass hud tilt rounded-xl p-5" data-tilt data-tilt-max="7">
+                                <p class="sm:hidden display text-mist text-base font-semibold mb-1">Focus: C# + Unity <span class="label ml-1">Q3</span></p>
+                                <p class="text-[0.875rem] text-dim leading-relaxed">Learnt the basics of C# and Unity Engine. Built a game and explored useful software and websites.</p>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="reveal relative flex flex-col sm:flex-row-reverse items-center">
+                        <div class="hidden sm:block w-1/2 pl-12 text-left">
+                            <h3 class="display text-mist text-lg font-semibold">Focus: Web + AI</h3>
+                            <p class="label mt-1.5">Quarter 4</p>
+                        </div>
+                        <span class="absolute left-0 sm:left-1/2 sm:-translate-x-1/2 dot-dim z-10" aria-hidden="true"></span>
+                        <div class="w-full sm:w-1/2 pl-7 sm:pl-0 sm:pr-12 sm:text-right">
+                            <div class="glass hud tilt rounded-xl p-5" data-tilt data-tilt-max="7">
+                                <p class="sm:hidden display text-mist text-base font-semibold mb-1">Focus: Web + AI <span class="label ml-1">Q4</span></p>
+                                <p class="text-[0.875rem] text-dim leading-relaxed">Learnt HTML, CSS and JavaScript with AI-assisted development. Started building websites and experimenting with modern web development.</p>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="reveal relative flex flex-col sm:flex-row items-center">
+                        <div class="hidden sm:block w-1/2 pr-12 text-right">
+                            <h3 class="display text-accent text-xl font-semibold">Focus: Building</h3>
+                            <p class="label mt-1.5" style="color:var(--emerald);opacity:1">2026 — Current</p>
+                        </div>
+                        <span class="absolute -left-[3px] sm:left-1/2 sm:-translate-x-1/2 dot-live z-10" aria-hidden="true"></span>
+                        <div class="w-full sm:w-1/2 pl-7 sm:pl-12">
+                            <div class="tilt rounded-xl p-5 border border-accent/20 bg-accent/[0.04]" data-tilt data-tilt-max="7">
+                                <p class="sm:hidden display text-accent text-base font-semibold mb-1">Focus: Building <span class="label ml-1" style="color:var(--emerald);opacity:1">Now</span></p>
+                                <p class="text-[0.875rem] text-mist leading-relaxed">Currently building applications, websites and tools while continuing to explore software development and backend technologies.</p>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= FOCUS + MILESTONES ======================= -->
+    <section class="relative py-24 sm:py-28 border-t border-line">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-16 scene">
+            <div class="reveal">
+                <p class="label mb-3">04 / Focus</p>
+                <h2 class="display text-mist text-3xl font-bold mb-8">What I'm exploring</h2>
+                <div class="space-y-3">
+                    <div class="glass hud tilt rounded-xl p-4 flex items-start gap-3.5" data-tilt data-tilt-max="7">
+                        <span class="p-2 rounded-lg border border-accent/20 bg-accent/5 shrink-0 lift-1">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                        </span>
+                        <div>
+                            <h3 class="text-mist text-[0.875rem] font-semibold">Backend Development</h3>
+                            <p class="text-[0.8125rem] text-dim mt-0.5">Digging deeper into server logic and databases.</p>
+                        </div>
+                    </div>
+                    <div class="glass hud tilt rounded-xl p-4 flex items-start gap-3.5" data-tilt data-tilt-max="7">
+                        <span class="p-2 rounded-lg border border-violet/20 bg-violet/5 shrink-0 lift-1">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg>
+                        </span>
+                        <div>
+                            <h3 class="text-mist text-[0.875rem] font-semibold">Python &amp; AI</h3>
+                            <p class="text-[0.8125rem] text-dim mt-0.5">Leveraging AI tools and Python scripts to automate tasks.</p>
+                        </div>
+                    </div>
+                    <div class="glass hud tilt rounded-xl p-4 flex items-start gap-3.5" data-tilt data-tilt-max="7">
+                        <span class="p-2 rounded-lg border border-emerald/20 bg-emerald/5 shrink-0 lift-1">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                        </span>
+                        <div>
+                            <h3 class="text-mist text-[0.875rem] font-semibold">Software Architecture</h3>
+                            <p class="text-[0.8125rem] text-dim mt-0.5">Understanding how to structure large-scale applications.</p>
+                        </div>
+                    </div>
+                    <div class="glass hud tilt rounded-xl p-4 flex items-start gap-3.5" data-tilt data-tilt-max="7">
+                        <span class="p-2 rounded-lg border border-rose/20 bg-rose/5 shrink-0 lift-1">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fb7185" stroke-width="2" aria-hidden="true"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                        </span>
+                        <div>
+                            <h3 class="text-mist text-[0.875rem] font-semibold">Building Products</h3>
+                            <p class="text-[0.8125rem] text-dim mt-0.5">Focusing on useful tools over theoretical tutorials.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal">
+                <p class="label mb-3">05 / Progress</p>
+                <h2 class="display text-mist text-3xl font-bold mb-8">Real milestones</h2>
+                <ol class="relative pl-6 border-l border-line space-y-8">
+                    <li class="relative">
+                        <span class="absolute -left-[30px] top-1.5 dot" aria-hidden="true"></span>
+                        <h3 class="text-mist text-base font-semibold">Built Multiple Projects <span class="mono text-[0.6875rem] text-accent">(2026)</span></h3>
+                        <p class="text-[0.8125rem] text-dim mt-1">Successfully developed and deployed full web tools and trackers.</p>
+                    </li>
+                    <li class="relative">
+                        <span class="absolute -left-[29px] top-2 dot-dim" aria-hidden="true"></span>
+                        <h3 class="text-[0.9375rem] font-medium">Built a Unity Game</h3>
+                        <p class="text-[0.8125rem] text-dim mt-1">Created atmosphere-focused game &ldquo;Call of Shekhar&rdquo;.</p>
+                    </li>
+                    <li class="relative">
+                        <span class="absolute -left-[29px] top-2 dot-dim" aria-hidden="true"></span>
+                        <h3 class="text-[0.9375rem] font-medium">Learned Multiple Languages</h3>
+                        <p class="text-[0.8125rem] text-dim mt-1">Grasped C, Python, C#, JS, Java concepts practically.</p>
+                    </li>
+                    <li class="relative">
+                        <span class="absolute -left-[29px] top-2 dot-dim" aria-hidden="true"></span>
+                        <h3 class="text-[0.9375rem] font-medium">Started Programming</h3>
+                        <p class="text-[0.8125rem] text-dim mt-1">Got my laptop and immediately began exploring code.</p>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= BEYOND CODE ======================= -->
+    <section class="relative py-20 border-t border-line">
+        <div class="max-w-4xl mx-auto px-6 text-center reveal scene">
+            <p class="label mb-8">Beyond code</p>
+            <div class="flex flex-wrap justify-center gap-3">
+                <span class="glass hud tilt rounded-xl px-5 py-2.5 flex items-center gap-2.5" data-tilt data-tilt-max="12">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.8" aria-hidden="true"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6a1 1 0 100-2 1 1 0 000 2zm-3 11.5V14l-3-3 4-3 2 3h3"/></svg>
+                    <span class="text-[0.875rem] font-medium">Cycling</span>
+                </span>
+                <span class="glass hud tilt rounded-xl px-5 py-2.5 flex items-center gap-2.5" data-tilt data-tilt-max="12">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.8" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 12h.01"/><path d="M17 12h.01"/><path d="M7 12h.01"/></svg>
+                    <span class="text-[0.875rem] font-medium">Gaming</span>
+                </span>
+                <span class="glass hud tilt rounded-xl px-5 py-2.5 flex items-center gap-2.5" data-tilt data-tilt-max="12">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fb7185" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                    <span class="text-[0.875rem] font-medium">Watching MMA</span>
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= CONTACT ======================= -->
+    <section id="contact" class="relative py-24 sm:py-28 border-t border-line overflow-hidden">
+        <div class="orb orb-drift w-[320px] h-[320px] bg-accent/[0.07] bottom-0 left-[8%]" style="animation-delay:4s" aria-hidden="true"></div>
+        <div class="orb orb-drift w-[220px] h-[220px] bg-violet/[0.07] bottom-12 right-[12%]" style="animation-delay:9s" aria-hidden="true"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto px-6 text-center reveal scene">
+            <p class="label mb-3">06 / Connect</p>
+            <h2 class="display text-mist text-4xl sm:text-5xl lg:text-6xl font-bold mb-5">Let's build<br>something.</h2>
+            <p class="lede mb-11">Have an idea, project, or simply want to connect? My inbox is open.</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <a href="mailto:shmlgowala@gmail.com" class="btn py-4">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    Email
+                </a>
+                <a href="https://wa.me/918453574472" target="_blank" rel="noopener noreferrer" class="btn btn-e py-4">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    WhatsApp
+                </a>
+                <a href="https://t.me/the_phantom_x" target="_blank" rel="noopener noreferrer" class="btn btn-v py-4">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    Telegram
+                </a>
+                <a href="https://github.com/sekharThePythoner" target="_blank" rel="noopener noreferrer" class="btn py-4">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= FOOTER ======================= -->
+    <footer class="py-8 border-t border-line">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p class="mono text-[0.625rem] text-dim tracking-wider">&copy; 2026 Shekhar — All rights reserved</p>
+            <p class="mono text-[0.625rem] text-dim tracking-wider flex items-center gap-1.5">
+                JITNA RAGDA, UDNA TAGDA <span class="text-rose" aria-hidden="true">&#128155;</span> <span aria-hidden="true">&#128128;</span>
+            </p>
+            <a href="#home" class="w-9 h-9 rounded-lg border border-line bg-white/[0.02] grid place-items-center text-dim hover:text-accent hover:border-accent/30 transition-colors" aria-label="Back to top">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+            </a>
+        </div>
+    </footer>
+
+    <!-- effects toggle -->
+    <button type="button" class="fx-toggle" id="fx-toggle" aria-pressed="true">
+        <span class="fx-dot" aria-hidden="true"></span>
+        <span id="fx-label">3D on</span>
+    </button>
+    <!-- Three.js (UMD build). If the CDN is blocked the hero degrades to a canvas-2D scene. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        var doc = document, win = window, body = doc.body;
+        var reduceMotion = win.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var coarse = win.matchMedia('(hover: none), (pointer: coarse)').matches;
+        var fxOn = !reduceMotion;
+
+        function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
+        function lerp(a, b, t) { return a + (b - a) * t; }
+        function list(sel, root) { return Array.prototype.slice.call((root || doc).querySelectorAll(sel)); }
+
+        /* ------------------------------------------------------------------
+           One rAF-throttled scroll bus. The original had two unthrottled
+           scroll listeners, both doing layout reads/writes on every event.
+        ------------------------------------------------------------------ */
+        var subs = [], queued = false, scrollY = win.pageYOffset || 0;
+        function flush() {
+            queued = false;
+            for (var i = 0; i < subs.length; i++) subs[i](scrollY);
+        }
+        win.addEventListener('scroll', function () {
+            scrollY = win.pageYOffset || doc.documentElement.scrollTop || 0;
+            if (!queued) { queued = true; win.requestAnimationFrame(flush); }
+        }, { passive: true });
+        function onScroll(fn) { subs.push(fn); fn(scrollY); }
+
+        /* ---------------------------- progress bar ---------------------------- */
+        var bar = doc.getElementById('progress');
+        onScroll(function (y) {
+            var max = doc.documentElement.scrollHeight - win.innerHeight;
+            bar.style.transform = 'scaleX(' + (max > 0 ? clamp(y / max, 0, 1) : 0) + ')';
+        });
+
+        /* ------------------------------ nav state ------------------------------ */
+        var navShell = doc.getElementById('nav-shell');
+        onScroll(function (y) { navShell.classList.toggle('is-stuck', y > 24); });
+
+        var navLinks = list('#nav-links .nav-link');
+        var sections = list('section[id]');
+        if ('IntersectionObserver' in win && navLinks.length) {
+            var navObs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (en) {
+                    if (!en.isIntersecting) return;
+                    var id = '#' + en.target.id;
+                    navLinks.forEach(function (l) {
+                        l.classList.toggle('is-active', l.getAttribute('href') === id);
+                    });
+                });
+            }, { rootMargin: '-45% 0px -50% 0px' });
+            sections.forEach(function (s) { navObs.observe(s); });
+        }
+
+        /* ---------------------------- mobile menu ---------------------------- */
+        var menuBtn = doc.getElementById('menu-btn');
+        var sheet = doc.getElementById('menu-sheet');
+        var menuClose = doc.getElementById('menu-close');
+
+        function setMenu(open) {
+            sheet.classList.toggle('is-open', open);
+            menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+            body.classList.toggle('is-locked', open);
+            var focusTarget = open ? sheet.querySelector('a') : menuBtn;
+            if (focusTarget && focusTarget.focus) {
+                try { focusTarget.focus({ preventScroll: true }); } catch (e) { focusTarget.focus(); }
+            }
+        }
+        menuBtn.addEventListener('click', function () {
+            setMenu(menuBtn.getAttribute('aria-expanded') !== 'true');
+        });
+        menuClose.addEventListener('click', function () { setMenu(false); });
+        list('a', sheet).forEach(function (a) {
+            a.addEventListener('click', function () { setMenu(false); });
+        });
+        doc.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && sheet.classList.contains('is-open')) setMenu(false);
+        });
+
+        /* ------------------------------- reveal ------------------------------- */
+        var revealEls = list('.reveal');
+        if (reduceMotion || !('IntersectionObserver' in win)) {
+            revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+        } else {
+            var revObs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (en) {
+                    if (!en.isIntersecting) return;
+                    var el = en.target;
+                    var peers = list('.reveal', el.parentElement);
+                    var delay = Math.min(peers.indexOf(el) * 70, 260);
+                    win.setTimeout(function () { el.classList.add('is-visible'); }, delay);
+                    revObs.unobserve(el);
+                });
+            }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+            revealEls.forEach(function (el) { revObs.observe(el); });
+        }
+
+        /* ------------------------------ counters ------------------------------
+           Was broken: `heroStats.closest('div')` returns the .stat element itself,
+           and querySelectorAll never matches the node it is called on — so the
+           animation never ran. It also appended "+" to every stat, turning the
+           single game count into "1+". Values now come from data attributes and
+           the markup ships with the final text for no-JS / no-IO cases.
+        ---------------------------------------------------------------------- */
+        function runCounter(el) {
+            var target = parseFloat(el.getAttribute('data-count')) || 0;
+            var suffix = el.getAttribute('data-suffix') || '';
+            if (reduceMotion) { el.textContent = target + suffix; return; }
+            var dur = 1100, start = 0;
+            function step(now) {
+                if (!start) start = now;
+                var p = clamp((now - start) / dur, 0, 1);
+                el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + suffix;
+                if (p < 1) win.requestAnimationFrame(step);
+            }
+            win.requestAnimationFrame(step);
+        }
+        var statsWrap = doc.getElementById('stats');
+        if (statsWrap && 'IntersectionObserver' in win) {
+            var statObs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (en) {
+                    if (!en.isIntersecting) return;
+                    list('[data-count]', en.target).forEach(runCounter);
+                    statObs.unobserve(en.target);
+                });
+            }, { threshold: 0.4 });
+            statObs.observe(statsWrap);
+        }
+
+        /* ---------------------------- custom cursor ---------------------------- */
+        var dot = doc.getElementById('cursor-dot');
+        var ring = doc.getElementById('cursor-ring');
+        if (!coarse) {
+            body.classList.add('cursor-custom');
+            var mx = win.innerWidth / 2, my = win.innerHeight / 2, rx = mx, ry = my, cursorRaf = 0;
+
+            function cursorFrame() {
+                rx = lerp(rx, mx, 0.16);
+                ry = lerp(ry, my, 0.16);
+                dot.style.transform = 'translate3d(' + (mx - 2.5) + 'px,' + (my - 2.5) + 'px,0)';
+                ring.style.transform = 'translate3d(' + (rx - 17) + 'px,' + (ry - 17) + 'px,0)';
+                cursorRaf = win.requestAnimationFrame(cursorFrame);
+            }
+            doc.addEventListener('pointermove', function (e) {
+                if (e.pointerType === 'touch') return;
+                mx = e.clientX; my = e.clientY;
+                if (!dot.classList.contains('is-ready')) {
+                    dot.classList.add('is-ready'); ring.classList.add('is-ready');
+                    rx = mx; ry = my;
+                    if (!cursorRaf) cursorFrame();
+                }
+            }, { passive: true });
+            doc.addEventListener('pointerover', function (e) {
+                var t = e.target && e.target.closest ? e.target.closest('a,button,[data-tilt],.tag') : null;
+                ring.classList.toggle('is-hover', !!t);
+            }, { passive: true });
+            doc.documentElement.addEventListener('mouseleave', function () {
+                dot.classList.remove('is-ready'); ring.classList.remove('is-ready');
+            });
+        }
+
+        /* ------------------------------ 3D tilt ------------------------------ */
+        var live = [], tiltRaf = 0;
+
+        list('[data-tilt]').forEach(function (el) {
+            var layers = list('.lift-1,.lift-2,.lift-3', el).map(function (n) {
+                return { node: n, d: n.classList.contains('lift-3') ? 52 : (n.classList.contains('lift-2') ? 34 : 18) };
+            });
+            el.__tilt = {
+                rx: 0, ry: 0, tx: 0, ty: 0, hot: false, rect: null,
+                max: parseFloat(el.getAttribute('data-tilt-max')) || 8,
+                layers: layers
+            };
+            if (coarse) return;
+
+            el.addEventListener('pointerenter', function (e) {
+                if (e.pointerType === 'touch') return;
+                el.__tilt.rect = el.getBoundingClientRect();
+            });
+            el.addEventListener('pointermove', function (e) {
+                if (!fxOn || e.pointerType === 'touch') return;
+                var s = el.__tilt;
+                var r = s.rect || (s.rect = el.getBoundingClientRect());
+                if (!r.width || !r.height) return;
+                var px = clamp((e.clientX - r.left) / r.width, 0, 1);
+                var py = clamp((e.clientY - r.top) / r.height, 0, 1);
+                s.hot = true;
+                s.ty = (px - 0.5) * 2 * s.max;
+                s.tx = -(py - 0.5) * 2 * s.max;
+                el.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+                el.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
+                el.classList.add('is-live');
+                wake(el);
+            });
+            el.addEventListener('pointerleave', function () {
+                var s = el.__tilt;
+                s.hot = false; s.tx = 0; s.ty = 0; s.rect = null;
+                wake(el);
+            });
+        });
+
+        function wake(el) {
+            if (live.indexOf(el) < 0) live.push(el);
+            if (!tiltRaf) tiltRaf = win.requestAnimationFrame(tiltFrame);
+        }
+        function resetTilt(el) {
+            var s = el.__tilt;
+            s.rx = s.ry = s.tx = s.ty = 0;
+            el.style.transform = '';
+            el.classList.remove('is-live');
+            s.layers.forEach(function (L) { L.node.style.transform = ''; });
+        }
+        function tiltFrame() {
+            tiltRaf = 0;
+            for (var i = live.length - 1; i >= 0; i--) {
+                var el = live[i], s = el.__tilt;
+                s.rx = lerp(s.rx, s.tx, 0.15);
+                s.ry = lerp(s.ry, s.ty, 0.15);
+                el.style.transform = 'rotateX(' + s.rx.toFixed(3) + 'deg) rotateY(' + s.ry.toFixed(3) + 'deg)';
+                for (var j = 0; j < s.layers.length; j++) {
+                    var L = s.layers[j], f = (L.d / 52) * 8;
+                    L.node.style.transform =
+                        'translate3d(' + (s.ry / s.max * f).toFixed(2) + 'px,' +
+                        (-s.rx / s.max * f).toFixed(2) + 'px,' + L.d + 'px)';
+                }
+                if (!s.hot && Math.abs(s.rx) < 0.02 && Math.abs(s.ry) < 0.02) {
+                    resetTilt(el);
+                    live.splice(i, 1);
+                }
+            }
+            if (live.length) tiltRaf = win.requestAnimationFrame(tiltFrame);
+        }
+
+        /* --------------------------- hero 3D scene --------------------------- */
+        var canvas = doc.getElementById('hero-canvas');
+        var hero = doc.getElementById('home');
+        var heroP = 0, visible = true, running = false, sceneRaf = 0, pulse = 0;
+        var ptr = { x: 0, y: 0, tx: 0, ty: 0 };
+        var draw = null, resizeScene = null;
+
+        onScroll(function (y) { heroP = clamp(y / Math.max(win.innerHeight, 1), 0, 1); });
+
+        win.addEventListener('pointermove', function (e) {
+            if (e.pointerType === 'touch') return;
+            ptr.tx = (e.clientX / win.innerWidth) * 2 - 1;
+            ptr.ty = (e.clientY / win.innerHeight) * 2 - 1;
+        }, { passive: true });
+        win.addEventListener('pointerdown', function () { pulse = 1; }, { passive: true });
+
+        function tick() {
+            sceneRaf = 0;
+            if (!running || !draw) return;
+            ptr.x = lerp(ptr.x, ptr.tx, 0.05);
+            ptr.y = lerp(ptr.y, ptr.ty, 0.05);
+            pulse *= 0.93;
+            draw(true);
+            sceneRaf = win.requestAnimationFrame(tick);
+        }
+        function syncScene() {
+            var want = visible && !doc.hidden && fxOn && !reduceMotion;
+            if (want === running) return;
+            running = want;
+            if (running) { if (!sceneRaf) sceneRaf = win.requestAnimationFrame(tick); }
+            else if (draw) { ptr.x = ptr.tx; ptr.y = ptr.ty; draw(false); }
+        }
+
+        /* --- WebGL path --- */
+        function initWebGL() {
+            var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setClearColor(0x000000, 0);
+            renderer.setPixelRatio(Math.min(win.devicePixelRatio || 1, 2));
+
+            var scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x06070b, 0.062);
+            var camera = new THREE.PerspectiveCamera(52, 1, 0.1, 140);
+            var world = new THREE.Group();
+            scene.add(world);
+
+            function shell(geo, color, opacity) {
+                var mesh = new THREE.LineSegments(
+                    new THREE.WireframeGeometry(geo),
+                    new THREE.LineBasicMaterial({ color: color, transparent: true, opacity: opacity })
+                );
+                world.add(mesh);
+                return mesh;
+            }
+            shell(new THREE.IcosahedronGeometry(1.95, 1), 0x22d3ee, 0.32);
+            var outer = shell(new THREE.DodecahedronGeometry(3.05, 0), 0xa78bfa, 0.16);
+            var cage = shell(new THREE.IcosahedronGeometry(4.4, 0), 0x22d3ee, 0.07);
+
+            world.add(new THREE.Points(
+                new THREE.IcosahedronGeometry(1.95, 2),
+                new THREE.PointsMaterial({
+                    color: 0x67e8f9, size: 0.05, transparent: true, opacity: 0.9,
+                    blending: THREE.AdditiveBlending, depthWrite: false
+                })
+            ));
+
+            var ring = new THREE.Mesh(
+                new THREE.TorusGeometry(3.5, 0.007, 3, 140),
+                new THREE.MeshBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.32 })
+            );
+            ring.rotation.x = Math.PI / 2.15;
+            world.add(ring);
+
+            var n = coarse ? 420 : 900;
+            var pos = new Float32Array(n * 3), col = new Float32Array(n * 3);
+            var palette = [new THREE.Color(0x22d3ee), new THREE.Color(0xa78bfa), new THREE.Color(0xdbe4ee)];
+            for (var i = 0; i < n; i++) {
+                var r = 5.5 + Math.random() * 12;
+                var th = Math.random() * Math.PI * 2;
+                var ph = Math.acos(2 * Math.random() - 1);
+                pos[i * 3] = r * Math.sin(ph) * Math.cos(th);
+                pos[i * 3 + 1] = r * Math.sin(ph) * Math.sin(th) * 0.62;
+                pos[i * 3 + 2] = r * Math.cos(ph);
+                var t = Math.random();
+                var c = palette[t < 0.55 ? 0 : (t < 0.88 ? 1 : 2)];
+                col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b;
+            }
+            var fieldGeo = new THREE.BufferGeometry();
+            fieldGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+            fieldGeo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+            var field = new THREE.Points(fieldGeo, new THREE.PointsMaterial({
+                size: 0.062, vertexColors: true, transparent: true, opacity: 0.85,
+                sizeAttenuation: true, blending: THREE.AdditiveBlending, depthWrite: false
+            }));
+            scene.add(field);
+
+            var spin = 0;
+            resizeScene = function () {
+                var w = hero.clientWidth || win.innerWidth;
+                var h = hero.clientHeight || win.innerHeight;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h, false);
+            };
+            resizeScene();
+
+            draw = function (animating) {
+                if (animating) spin += 0.0016;
+                world.rotation.y = spin + ptr.x * 0.5;
+                world.rotation.x = ptr.y * 0.32 + heroP * 0.5;
+                outer.rotation.z = -spin * 1.4;
+                cage.rotation.y = -spin * 0.6;
+                field.rotation.y = -spin * 0.45;
+                field.rotation.x = ptr.y * 0.06;
+                var s = 1 + pulse * 0.08;
+                world.scale.set(s, s, s);
+                camera.position.set(ptr.x * 0.7, -ptr.y * 0.45, 8.6 + heroP * 5);
+                camera.lookAt(0, 0, 0);
+                renderer.render(scene, camera);
+            };
+        }
+
+        /* --- canvas-2D fallback: perspective-projected point cloud --- */
+        function init2D() {
+            var ctx = canvas.getContext('2d');
+            if (!ctx) return;
+            var dpr = Math.min(win.devicePixelRatio || 1, 2), W = 1, H = 1;
+            var n = coarse ? 90 : 170, pts = [];
+            for (var i = 0; i < n; i++) {
+                var r = 1.4 + Math.random() * 2.6;
+                var th = Math.random() * Math.PI * 2;
+                var ph = Math.acos(2 * Math.random() - 1);
+                pts.push({
+                    x: r * Math.sin(ph) * Math.cos(th),
+                    y: r * Math.sin(ph) * Math.sin(th) * 0.65,
+                    z: r * Math.cos(ph),
+                    c: Math.random() < 0.6 ? '34,211,238' : '167,139,250'
+                });
+            }
+            var spin = 0;
+
+            resizeScene = function () {
+                W = hero.clientWidth || win.innerWidth;
+                H = hero.clientHeight || win.innerHeight;
+                canvas.width = Math.round(W * dpr);
+                canvas.height = Math.round(H * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            };
+            resizeScene();
+
+            draw = function (animating) {
+                if (animating) spin += 0.0022;
+                ctx.clearRect(0, 0, W, H);
+                var cx = W / 2, cy = H / 2, f = Math.min(W, H) * 0.42;
+                var ay = spin + ptr.x * 0.5, ax = ptr.y * 0.3 + heroP * 0.5;
+                var sa = Math.sin(ay), ca = Math.cos(ay), sb = Math.sin(ax), cb = Math.cos(ax);
+                var proj = [];
+                for (var i = 0; i < pts.length; i++) {
+                    var p = pts[i];
+                    var x = p.x * ca - p.z * sa, z = p.x * sa + p.z * ca;
+                    var y = p.y * cb - z * sb; z = p.y * sb + z * cb;
+                    var d = 6 + z * (1 + pulse * 0.1);
+                    if (d < 0.6) continue;
+                    var k = f / d;
+                    proj.push({ x: cx + x * k, y: cy + y * k, s: clamp(k * 0.022, 0.4, 2.4), a: clamp(1.6 / d, 0.05, 0.7), c: p.c });
+                }
+                for (var j = 0; j < proj.length; j++) {
+                    var q = proj[j];
+                    for (var m = j + 1; m < proj.length; m++) {
+                        var o = proj[m], dx = q.x - o.x, dy = q.y - o.y;
+                        var dist2 = dx * dx + dy * dy;
+                        if (dist2 < 12100) {
+                            ctx.strokeStyle = 'rgba(34,211,238,' + (0.05 * (1 - Math.sqrt(dist2) / 110)).toFixed(3) + ')';
+                            ctx.lineWidth = 0.5;
+                            ctx.beginPath(); ctx.moveTo(q.x, q.y); ctx.lineTo(o.x, o.y); ctx.stroke();
+                        }
+                    }
+                    ctx.fillStyle = 'rgba(' + q.c + ',' + q.a.toFixed(3) + ')';
+                    ctx.beginPath(); ctx.arc(q.x, q.y, q.s, 0, Math.PI * 2); ctx.fill();
+                }
+            };
+        }
+
+        try {
+            if (win.THREE && win.WebGLRenderingContext) initWebGL(); else init2D();
+        } catch (err) {
+            try { init2D(); } catch (err2) { draw = null; }
+        }
+
+        if (draw) {
+            draw(false);
+            var rTimer;
+            win.addEventListener('resize', function () {
+                win.clearTimeout(rTimer);
+                rTimer = win.setTimeout(function () {
+                    if (resizeScene) resizeScene();
+                    if (!running && draw) draw(false);
+                }, 140);
+            });
+            if ('IntersectionObserver' in win) {
+                new IntersectionObserver(function (entries) {
+                    visible = entries[0].isIntersecting;
+                    syncScene();
+                }, { threshold: 0.01 }).observe(hero);
+            }
+            doc.addEventListener('visibilitychange', syncScene);
+            syncScene();
+        }
+
+        /* ---------------------------- effects toggle ---------------------------- */
+        var fxBtn = doc.getElementById('fx-toggle');
+        var fxLabel = doc.getElementById('fx-label');
+
+        function applyFx() {
+            body.classList.toggle('fx-off', !fxOn);
+            fxBtn.classList.toggle('fx-off', !fxOn);
+            fxBtn.setAttribute('aria-pressed', fxOn ? 'true' : 'false');
+            fxLabel.textContent = fxOn ? '3D on' : '3D off';
+            if (!fxOn) {
+                live.slice().forEach(resetTilt);
+                live.length = 0;
+            }
+            syncScene();
+        }
+        fxBtn.addEventListener('click', function () { fxOn = !fxOn; applyFx(); });
+        if (!fxOn) applyFx();
+    })();
+    </script>
+
+</body>
+</html>
